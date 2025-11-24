@@ -14,6 +14,7 @@ export default {
                     secondary: '#6b7280',
                     'secondary-hover': '#4b5563',
                     accent: '#10b981',
+                    'accent-hover': '#059669',
                 },
                 status: {
                     success: '#10b981',
