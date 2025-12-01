@@ -1,85 +1,92 @@
-import { useState } from 'react';
 import { Button } from '../components/ui/Button';
-//TODO: Go over every color everywhere and switch it with the centralized tailwind equivalent
-export function GamesPage() {
-    const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+import TiltedCard from '../components/ui/TiltedCard.tsx';
+import { GameCarousel } from '../components/gameLibrary/GameCarousel';
+import { MOCK_GAMES} from "@/mockData/games.ts";
+import type { Game } from '../types/game.types.ts';
 
-    const mockGames = [
-        {
-            id: 1,
-            title: 'Tic-Tac-Toe',
-            description: 'Classic 3x3 grid strategy game. Get three in a row to win!',
-            image: 'https://images.unsplash.com/photo-1611996575749-79a3a250f948?w=600&h=400&fit=crop',
-        },
-        {
-            id: 2,
-            title: 'Connect Four',
-            description: 'Drop discs and connect four in a row - vertically, horizontally, or diagonally!',
-            image: 'https://images.unsplash.com/photo-1632501641765-e568d28b0015?w=600&h=400&fit=crop',
-        },
-        {
-            id: 3,
-            title: 'Chess',
-            description: 'The ultimate strategy game. Checkmate your opponent to win!',
-            image: 'https://images.unsplash.com/photo-1529699211952-734e80c4d42b?w=600&h=400&fit=crop',
-        },
-    ];
+export function GamesPage() {
+    const games = MOCK_GAMES;
 
     return (
-        <div>
-            <div className="mb-8">
-                <h1 className="text-4xl font-bold text-white mb-2">Game Library</h1>
-                <p className="text-gray-400">Discover and play amazing games</p>
-            </div>
+        <div className="w-full min-h-screen bg-zinc-950 text-zinc-100 font-sans pb-12">
 
-            <div className="mb-6 flex flex-col sm:flex-row gap-4">
-                <div className="flex-1">
-                    <input
-                        type="text"
-                        placeholder="Search games..."
-                        className="w-full px-4 py-3 bg-game-card border border-game-border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent"
-                    />
+            <section className="mb-12 pt-6">
+                <GameCarousel items={games} />
+            </section>
+
+            <div className="mx-auto px-6">
+
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+                    <div>
+                        <h2 className="text-3xl font-bold tracking-tight text-white mb-1">
+                            All Games
+                        </h2>
+                        <p className="text-zinc-400">
+                            {games.length} experiences available
+                        </p>
+                    </div>
+
+                    <div className="w-full md:w-80 relative">
+                        <input
+                            type="text"
+                            placeholder="Search library..."
+                            className="w-full px-4 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                        />
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+                    {games.map((game) => (
+                        <div key={game.id} className="flex justify-center w-full">
+                            <TiltedCard
+                                imageSrc={game.image}
+                                altText={game.title}
+                                captionText={game.title}
+                                containerHeight="420px"
+                                containerWidth="100%"
+                                imageHeight="420px"
+                                imageWidth="100%"
+                                rotateAmplitude={8}
+                                scaleOnHover={1.03}
+                                showMobileWarning={false}
+                                showTooltip={false}
+                                displayOverlayContent={true}
+                                overlayContent={
+                                    <GameCardOverlay game={game} />
+                                }
+                            />
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+//May move this later to a separate component
+
+function GameCardOverlay({ game }: { game: Game }) {
+    return (
+        <div className="flex flex-col justify-between h-full w-full pointer-events-none">
+            <div className="p-4 flex justify-between items-start pointer-events-auto">
+                <div className="flex gap-2">
+                    {game.tags.map(tag => (
+                        <span key={tag} className="px-2 py-1 text-[10px] uppercase tracking-wider font-bold bg-black/50 backdrop-blur-md rounded border border-white/10 text-white">
+                            {tag}
+                        </span>
+                    ))}
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {mockGames.map((game) => (
-                    <div
-                        key={game.id}
-                        onMouseEnter={() => setHoveredCard(game.id)}
-                        onMouseLeave={() => setHoveredCard(null)}
-                        className="group relative bg-game-card rounded-xl overflow-hidden border border-game-border hover:border-brand-primary transition-all duration-300 hover:shadow-2xl hover:shadow-brand-primary/20 hover:-translate-y-1"
-                    >
-                        <div className="relative h-48 overflow-hidden">
-                            <img
-                                src={game.image}
-                                alt={game.title}
-                                className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
-                            />
-                            <div className={`absolute inset-0 bg-gradient-to-t from-game-dark via-game-dark/50 to-transparent transition-opacity duration-300 ${
-                                hoveredCard === game.id ? 'opacity-100' : 'opacity-0'
-                            }`}>
-                            </div>
-                            <button className="absolute top-3 right-3 w-10 h-10 bg-game-dark/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-game-hover transition-all">
-                                <span className="text-xl">🤍</span>
-                            </button>
-                        </div>
-                        <div className="p-5">
-                            <div className="flex justify-between items-start mb-2">
-                                <h3 className="text-xl font-bold text-white group-hover:text-brand-primary transition-colors">
-                                    {game.title}
-                                </h3>
-                            </div>
-
-                            <p className="text-gray-400 text-sm mb-4 line-clamp-2">
-                                {game.description}
-                            </p>
-                            <Button className="w-full group-hover:shadow-lg group-hover:shadow-brand-primary/50 transition-all">
-                                Play Now
-                            </Button>
-                        </div>
-                    </div>
-                ))}
+            <div className="relative p-5 bg-gradient-to-t from-black via-black/80 to-transparent pt-12">
+                <h3 className="text-2xl font-bold text-white mb-2 leading-tight drop-shadow-lg">
+                    {game.title}
+                </h3>
+                <div className="pointer-events-auto">
+                    <Button variant="white" className="w-full">
+                        PLAY NOW
+                    </Button>
+                </div>
             </div>
         </div>
     );

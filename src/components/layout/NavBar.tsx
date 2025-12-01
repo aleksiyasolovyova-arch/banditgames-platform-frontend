@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 
-export function Header() {
+export function NavBar() {
     const location = useLocation();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -9,14 +9,13 @@ export function Header() {
 
     const navItems = [
         { name: 'Games', path: '/' },
-        { name: 'Lobby', path: '/lobby' },
         { name: 'Friends', path: '/friends' },
         { name: 'Achievements', path: '/achievements' },
     ];
 
     return (
         <header className="bg-game-dark border-b border-game-border sticky top-0 z-50 shadow-lg">
-            <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav className="mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     <div className="flex items-center flex-shrink-0">
                         <Link to="/" className="flex items-center space-x-3 group">
