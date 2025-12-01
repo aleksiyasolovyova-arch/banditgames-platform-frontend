@@ -1,5 +1,13 @@
 export type GameState = 'ACCEPTED' | 'REJECTED' | 'PENDING'
 
+export interface Game {
+    id: number;
+    title: string;
+    description: string;
+    image: string;
+    tags: string[];
+}
+
 export interface GameDto {
     id: string;
     title: string;
