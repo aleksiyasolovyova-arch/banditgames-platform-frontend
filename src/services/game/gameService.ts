@@ -1,4 +1,4 @@
-import {type GameDto, type UpdateGameRequest } from "../types/game.types.ts";
+import {type GameDto, type UpdateGameRequest } from "../../types/game.types.ts";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/game';
 
