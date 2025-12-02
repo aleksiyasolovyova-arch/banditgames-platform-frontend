@@ -3,8 +3,10 @@ import { Layout } from '@/components/layout/Layout';
 import { GamesPage } from '@/pages/GamesPage';
 import { FriendsPage } from '@/pages/FriendsPage';
 import {AchievementsPage} from "@/pages/AchievementsPage.tsx";
+import {KeycloakProvider} from "@/context/KeycloakContext.tsx";
 function App() {
     return (
+        <KeycloakProvider>
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Layout />}>
@@ -14,6 +16,7 @@ function App() {
                 </Route>
             </Routes>
         </BrowserRouter>
+        </KeycloakProvider>
     );
 }
 

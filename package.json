@@ -16,6 +16,7 @@
     "axios": "^1.13.2",
     "clsx": "^2.1.1",
     "gsap": "^3.13.0",
+    "keycloak-js": "^26.2.1",
     "motion": "^12.23.24",
     "postprocessing": "^6.38.0",
     "react": "^19.2.0",
