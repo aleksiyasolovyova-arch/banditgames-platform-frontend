@@ -1,3 +1,6 @@
+export type AchievementCategory = 'game' | 'platform';
+
+
 export interface Achievement {
     id: string;
     title: string;
@@ -5,4 +8,5 @@ export interface Achievement {
     imageUrl: string;
     isUnlocked: boolean;
     dateUnlocked?: string;
+    category: AchievementCategory;
 }
