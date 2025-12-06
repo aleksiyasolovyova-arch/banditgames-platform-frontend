@@ -3,7 +3,7 @@ import { Layout } from '@/components/layout/Layout';
 import { GamesPage } from '@/pages/GamesPage';
 import { FriendsPage } from '@/pages/FriendsPage';
 import {AchievementsPage} from "@/pages/AchievementsPage.tsx";
-import {KeycloakProvider} from "@/context/KeycloakContext.tsx";
+import {KeycloakProvider} from "@/context/KeycloakProvider.tsx";
 function App() {
     return (
         <KeycloakProvider>
