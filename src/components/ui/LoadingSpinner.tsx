@@ -1,8 +1,13 @@
-import React from "react";
-import {PropagateLoader} from "react-spinners";
+import { PropagateLoader } from "react-spinners"
 
 interface LoadingSpinnerProps {
-    color?: string,
-    size?: number}
+    color?: string
+    size?: number
+}
 
-export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({color = "white", size = 16}) => <PropagateLoader color={color} size={size} />;
+export const LoadingSpinner = ({
+                                   color = "white",
+                                   size = 16
+                               }: LoadingSpinnerProps) => {
+    return <PropagateLoader color={color} size={size} />
+}

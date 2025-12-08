@@ -16,6 +16,7 @@ export interface GameDto {
     creator: string;
     gameUrl: string;
     rules: string[];
+    tags: string[];
 }
 
 export interface UpdateGameRequest {

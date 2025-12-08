@@ -1,6 +1,17 @@
 import { Outlet } from 'react-router-dom';
-import { NavBar } from './NavBar.tsx';
+import  GooeyNav  from '@/components/layout/GooeyNav.tsx';
 // import PixelBlast from "@/components/ui/PixelBlast.tsx";
+{/* This effect is quite difficult to recreate faithfully using Tailwind, so a style tag is a necessary workaround */}
+
+const items = [
+
+    { label: "Games", href: "/" },
+
+    { label: "Friends", href: "/friends" },
+
+    { label: "Achievements", href: "/achievements" }
+
+];
 
 export function Layout() {
     return (
@@ -31,7 +42,9 @@ export function Layout() {
             {/*        noiseAmount={0.05}*/}
             {/*    />*/}
             {/*</div>*/}
-            <NavBar />
+            <div className="h-[200px] relative flex items-center justify-center">
+                <GooeyNav items={items} />
+        </div>
             <main className="w-full px-4 sm:px-6 lg:px-8 py-8">
                 <Outlet />
             </main>
