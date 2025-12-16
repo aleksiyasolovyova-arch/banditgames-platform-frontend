@@ -1,41 +1,42 @@
 //Temporary data file, before the implementation of the API
 
-import type { Game } from '../types/game.types.ts';
+import {type Game, RegistrationState} from '../types/game.types.ts';
 
 export const MOCK_GAMES: Game[] = [
     {
-        id: 1,
-        title: 'Tic-Tac-Toe',
-        description: 'The classic strategy. 3-in-a-row wins.',
-        image: 'https://images.unsplash.com/photo-1611996575749-79a3a250f948?w=800&q=80',
-        tags: ['Strategy', 'Casual'],
+        id: 'g1',
+        name: 'Cyber Punk 2088',
+        description: 'A futuristic RPG awaiting approval. Check the buttons!',
+        price: 59.99,
+        pictureUrl: 'https://placehold.co/600x400/222222/FFF?text=Pending',
+        gameUrl: 'https://game.com/cyber',
+        gameCreatorName: 'Dev Studio One',
+        registrationState: RegistrationState.PENDING, // <--- Key for testing buttons
+        rules: [{ description: 'No cheating' }],
+        achievements: [{ code: 'a1', description: 'First Blood' }]
     },
     {
-        id: 2,
-        title: 'Connect Four',
-        description: 'Drop discs. Connect vertically or diagonally.',
-        image: 'https://images.unsplash.com/photo-1632501641765-e568d28b0015?w=800&q=80',
-        tags: ['Board', 'Family'],
+        id: 'g2',
+        name: 'Fantasy Quest Online',
+        description: 'This game is already live. Buttons should be hidden.',
+        price: 0,
+        pictureUrl: 'https://placehold.co/600x400/228B22/FFF?text=Accepted',
+        gameUrl: 'https://fantasy.com',
+        gameCreatorName: 'Indie Dev',
+        registrationState: RegistrationState.ACCEPTED, // <--- Key for testing badges
+        rules: [{ description: 'Be nice' }],
+        achievements: []
     },
     {
-        id: 3,
-        title: 'Chess Master',
-        description: 'Checkmate your opponent in the ultimate duel.',
-        image: 'https://images.unsplash.com/photo-1529699211952-734e80c4d42b?w=800&q=80',
-        tags: ['Brain', 'Competitive'],
-    },
-    {
-        id: 4,
-        title: 'Cyber Circuit',
-        description: 'Navigate the neon grid in this fast-paced racer.',
-        image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&q=80',
-        tags: ['Action', 'Racing'],
-    },
-    {
-        id: 5,
-        title: 'Space Odyssey',
-        description: 'Explore the unknown depths of the universe.',
-        image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80',
-        tags: ['Sci-Fi', 'Adventure'],
-    },
+        id: 'g3',
+        name: 'Broken Game',
+        description: 'This game was rejected due to bugs.',
+        price: 10.00,
+        pictureUrl: 'https://placehold.co/600x400/8B0000/FFF?text=Rejected',
+        gameUrl: 'https://badgame.com',
+        gameCreatorName: 'Spammer',
+        registrationState: RegistrationState.REJECTED,
+        rules: [],
+        achievements: []
+    }
 ];

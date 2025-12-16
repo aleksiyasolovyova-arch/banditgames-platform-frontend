@@ -4,13 +4,14 @@ import { GamesPage } from '@/pages/GamesPage';
 import { FriendsPage } from '@/pages/FriendsPage';
 import {AchievementsPage} from "@/pages/AchievementsPage.tsx";
 import {KeycloakProvider} from "@/context/KeycloakProvider.tsx";
+import {AdminDashboardPage} from "@/pages/admin/AdminDashboardPage.tsx";
 function App() {
     return (
         <KeycloakProvider>
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Layout />}>
-                    <Route index element={<GamesPage />} />
+                    <Route path="/admin" element={<AdminDashboardPage />} />                    <Route index element={<GamesPage />} />
                     <Route path="achievements" element={<AchievementsPage />} />
                     <Route path="friends" element={<FriendsPage />} />
                 </Route>
