@@ -1,55 +1,72 @@
-import type { Achievement } from '../types/achievement.type.ts';
+import {type Achievement, AchievementType, type GameAchievement} from '../types/achievement.type.ts';
 
-export const MOCK_ACHIEVEMENTS: Achievement[] = [
+export const MOCK_PLATFORM_ACHIEVEMENTS: Achievement[] = [
     {
-        id: '1',
-        title: 'First Blood',
-        description: 'Win your first game in any category.',
-        imageUrl: 'https://images.unsplash.com/photo-1533518463841-d62e1fc91373?w=400&q=80',
-        isUnlocked: true,
-        dateUnlocked: 'Oct 12, 2023',
-        category: "game"
+        id: 'p1',
+        name: 'Social Butterfly',
+        description: 'Add 10 friends to your network',
+        pictureUrl: 'https://placehold.co/100',
+        type: AchievementType.FRIEND_COUNT,
+        requiredValue: 10
     },
     {
-        id: '2',
-        title: 'Grandmaster',
-        description: 'Win 10 games of Chess in a row without losing.',
-        imageUrl: 'https://images.unsplash.com/photo-1529699211952-734e80c4d42b?w=400&q=80',
-        isUnlocked: false, // Locked
-        category: "game"
+        id: 'p2',
+        name: 'Veteran Player',
+        description: 'Play 100 matches across all games',
+        pictureUrl: 'https://placehold.co/100',
+        type: AchievementType.PLAY_COUNT,
+        requiredValue: 100
     },
     {
-        id: '3',
-        title: 'Speed Demon',
-        description: 'Complete a game of Connect Four in under 1 minute.',
-        imageUrl: 'https://images.unsplash.com/photo-1614713568397-b30b7e6d20cc?w=400&q=80',
-        isUnlocked: true,
-        dateUnlocked: 'Nov 01, 2023',
-        category: "game"
-    },
-    {
-        id: '4',
-        title: 'Social Butterfly',
-        description: 'Add 5 friends to your friends list.',
-        imageUrl: 'https://images.unsplash.com/photo-1511632765486-a4a920224e5f?w=400&q=80',
-        isUnlocked: false,
-        category: "platform"
-    },
-    {
-        id: '5',
-        title: 'Sharpshooter',
-        description: 'Win a game with 100% accuracy.',
-        imageUrl: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&q=80',
-        isUnlocked: true,
-        dateUnlocked: 'Dec 05, 2023',
-        category: "platform"
-    },
-    {
-        id: '6',
-        title: 'Marathoner',
-        description: 'Play games for a total of 24 hours.',
-        imageUrl: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&q=80',
-        isUnlocked: false,
-        category: "platform"
+        id: 'p3',
+        name: 'Winner',
+        description: 'Win 50 matches',
+        pictureUrl: 'https://placehold.co/100',
+        type: AchievementType.WIN_COUNT,
+        requiredValue: 50
     }
-];
+]
+
+export const MOCK_GAME_ACHIEVEMENTS: GameAchievement[] = [
+    {
+        code: 'FIRST_VICTORY',
+        description: 'Win your first match in this game',
+        gameId: 'g1',
+        gameName: 'CyberPunk 2088'
+    },
+    {
+        code: 'PERFECT_GAME',
+        description: 'Complete a match without losing a single piece',
+        gameId: 'g3',
+        gameName: 'Fantasy Quest Online'
+    },
+    {
+        code: 'SPEED_DEMON',
+        description: 'Win a match in under 5 minutes',
+        gameId: 'g2',
+        gameName: 'Broken Game'
+    }
+]
+
+export const MOCK_USER_PROGRESS = {
+    friendCount: 5,
+    matchCount: 25,
+    winCount: 12
+}
+
+// User's unlocked game achievements (codes)
+export const MOCK_UNLOCKED_GAME_ACHIEVEMENTS = [
+    'FIRST_VICTORY',
+    'SPEED_DEMON'
+]
+
+// Helper type for platform achievements with progress
+export interface PlatformAchievementWithProgress extends Achievement {
+    currentValue: number;
+    isUnlocked: boolean;
+}
+
+// Helper type for game achievements with unlock status
+export interface GameAchievementWithStatus extends GameAchievement {
+    isUnlocked: boolean;
+}

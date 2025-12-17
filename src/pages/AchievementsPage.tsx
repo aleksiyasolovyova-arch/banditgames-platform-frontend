@@ -1,18 +1,53 @@
-import { MOCK_ACHIEVEMENTS } from "@/mockData/achievements.ts";
+import {
+    type GameAchievementWithStatus,
+    MOCK_GAME_ACHIEVEMENTS,
+    MOCK_PLATFORM_ACHIEVEMENTS, MOCK_UNLOCKED_GAME_ACHIEVEMENTS,
+    MOCK_USER_PROGRESS, type PlatformAchievementWithProgress
+} from "@/mockData/achievements.ts";
 import {AchievementSection} from "@/components/achievements/AchievementSection.tsx";
 import {useMemo} from "react";
+import {AchievementType} from "@/types/achievement.type.ts";
 
 export function AchievementsPage() {
-    const unlockedCount = MOCK_ACHIEVEMENTS.filter(a => a.isUnlocked).length
-    const totalCount = MOCK_ACHIEVEMENTS.length
-    const progress = totalCount > 0 ? Math.round((unlockedCount / totalCount) * 100) : 0
+    // Calculate progress for platform achievements based on user stats
+    const platformAchievementsWithProgress = useMemo((): PlatformAchievementWithProgress[] => {
+        return MOCK_PLATFORM_ACHIEVEMENTS.map(achievement => {
+            let currentValue = 0;
 
-    const { gameAchievements, platformAchievements } = useMemo(() => {
-        return {
-            gameAchievements: MOCK_ACHIEVEMENTS.filter(a => (a as any).category === 'game' || !(a as any).category),
-            platformAchievements: MOCK_ACHIEVEMENTS.filter(a => (a as any).category === 'platform'),
-        }
-    }, [])
+            switch (achievement.type) {
+                case AchievementType.FRIEND_COUNT:
+                    currentValue = MOCK_USER_PROGRESS.friendCount;
+                    break;
+                case AchievementType.PLAY_COUNT:
+                    currentValue = MOCK_USER_PROGRESS.matchCount;
+                    break;
+                case AchievementType.WIN_COUNT:
+                    currentValue = MOCK_USER_PROGRESS.winCount;
+                    break;
+            }
+
+            return {
+                ...achievement,
+                currentValue,
+                isUnlocked: currentValue >= achievement.requiredValue
+            };
+        });
+    }, []);
+
+    // Add unlock status to game achievements
+    const gameAchievementsWithStatus = useMemo((): GameAchievementWithStatus[] => {
+        return MOCK_GAME_ACHIEVEMENTS.map(achievement => ({
+            ...achievement,
+            isUnlocked: MOCK_UNLOCKED_GAME_ACHIEVEMENTS.includes(achievement.code)
+        }));
+    }, []);
+
+    // Calculate total progress
+    const platformUnlocked = platformAchievementsWithProgress.filter(a => a.isUnlocked).length;
+    const gameUnlocked = gameAchievementsWithStatus.filter(a => a.isUnlocked).length;
+    const totalUnlocked = platformUnlocked + gameUnlocked;
+    const totalCount = platformAchievementsWithProgress.length + gameAchievementsWithStatus.length;
+    const progress = totalCount > 0 ? Math.round((totalUnlocked / totalCount) * 100) : 0;
 
     return (
         <div className="w-full min-h-screen bg-zinc-950 text-zinc-100 font-sans pb-20 pt-10">
@@ -39,7 +74,7 @@ export function AchievementsPage() {
                             />
                         </div>
                         <p className="text-xs text-zinc-500 mt-2 text-right">
-                            {unlockedCount} / {totalCount} Unlocked
+                            {totalUnlocked} / {totalCount} Unlocked
                         </p>
                     </div>
                 </div>
@@ -48,12 +83,12 @@ export function AchievementsPage() {
             <main className="mx-auto px-6 max-w-7xl">
                 <AchievementSection
                     title="Platform Milestones"
-                    achievements={platformAchievements}
+                    achievements={platformAchievementsWithProgress}
                 />
 
                 <AchievementSection
                     title="Game Trophies"
-                    achievements={gameAchievements}
+                    achievements={gameAchievementsWithStatus}
                 />
             </main>
         </div>

@@ -1,12 +1,37 @@
-export type AchievementCategory = 'game' | 'platform';
-
-
 export interface Achievement {
     id: string;
-    title: string;
+    name: string;
     description: string;
-    imageUrl: string;
-    isUnlocked: boolean;
-    dateUnlocked?: string;
-    category: AchievementCategory;
+    pictureUrl: string;
+    type: AchievementType;
+    requiredValue: number;
 }
+
+export interface GameAchievement {
+    code: string;
+    description: string;
+    gameId: string;
+    gameName: string;
+}
+
+export interface CreateAchievementRequest {
+    achievementName: string;
+    description: string;
+    pictureUrl: string;
+    achievementType: AchievementType;
+    requiredValue: number;
+}
+
+export interface GameAchievementStub {
+    code: string;
+    description: string;
+}
+
+export const AchievementType = {
+    PLAY_COUNT: 'PLAY_COUNT',     // Unlocked after playing N games
+    WIN_COUNT: 'WIN_COUNT',       // Unlocked after winning N games
+    FRIEND_COUNT: 'FRIEND_COUNT', // Unlocked after making N friends
+    RECORD_TIME: 'RECORD_TIME'    // Unlocked when best time is under N ms
+} as const;
+
+export type AchievementType = (typeof AchievementType)[keyof typeof AchievementType];

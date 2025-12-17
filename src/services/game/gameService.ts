@@ -1,54 +1,37 @@
-import {type GameDto, type UpdateGameRequest } from "../../types/game.types.ts";
+import axios from 'axios';
+import type {Game, UpdateGameUrlRequest, RegisterGameRequest} from "@/types/game.types.ts";
+import {MOCK_GAMES_ADMIN} from "@/mockData/games.ts";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/game';
+const USE_MOCKS = true;
+const API_URL = import.meta.env.BACKEND_URL;
 
-class GameService {
-    async getGames(): Promise<GameDto[]> {
-        const response = await fetch(`${API_BASE_URL}/games`);
-        if (!response.ok) {
-            throw new Error('Failed to fetch games');
+export const gameService = {
+    getAllGames: async (): Promise<Game[]> => {
+        if (USE_MOCKS) {
+            await new Promise(r => setTimeout(r, 500));
+            return MOCK_GAMES_ADMIN;
         }
-        return response.json();
+        const { data } = await axios.get(`${API_URL}/games`);
+        return data;
+    },
+
+    createGame: async (payload: RegisterGameRequest): Promise<Game> => {
+        const {data} = await axios.post(`${API_URL}/games`, payload);
+        return data;
+    },
+
+    updateGameUrls: async (id: string, payload: UpdateGameUrlRequest): Promise<Game> => {
+        const {data} = await axios.put(`${API_URL}/games/${id}`, payload);
+        return data;
+    },
+
+    acceptGame: async (id: string): Promise<Game> => {
+        const {data} = await axios.put(`${API_URL}/games/${id}/accept`);
+        return data;
+    },
+
+    rejectGame: async (id: string): Promise<Game> => {
+        const {data} = await axios.put(`${API_URL}/games/${id}/reject`);
+        return data;
     }
-
-    async acceptGame(gameId: string): Promise<GameDto> {
-        const response = await fetch(`${API_BASE_URL}/games/${gameId}/accept`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json'
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to accept game');
-        }
-        return response.json();
-    }
-
-    async rejectGame(gameId: string): Promise<GameDto> {
-        const response = await fetch(`${API_BASE_URL}/games/${gameId}/reject`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json'
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to reject game');
-        }
-        return response.json();
-    }
-
-    async updateGame(gameId: string, data: UpdateGameRequest): Promise<GameDto> {
-        const response = await fetch(`${API_BASE_URL}/games/${gameId}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to update game');
-        }
-        return response.json();
-    }
-}
-
-export const gameService = new GameService();
+};

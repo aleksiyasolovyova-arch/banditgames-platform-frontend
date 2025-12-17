@@ -13,7 +13,7 @@ export function GameCarousel({ items, autoPlayInterval = 5000 }: CarouselProps) 
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [isHovering, setIsHovering] = useState<boolean>(false);
 
-    const [detailsGameId, setDetailsGameId] = useState<number | null>(null);
+    const [detailsGameId, setDetailsGameId] = useState<string | null>(null);
 
     useEffect(() => {
         if (isHovering || detailsGameId !== null) return;
@@ -66,8 +66,8 @@ export function GameCarousel({ items, autoPlayInterval = 5000 }: CarouselProps) 
                             onClick={() => { if (!isActive) setCurrentIndex(index); }}
                         >
                             <img
-                                src={item.image}
-                                alt={item.title}
+                                src={item.pictureUrl}
+                                alt={item.name}
                                 className="w-full h-full object-cover"
                             />
 
@@ -80,7 +80,7 @@ export function GameCarousel({ items, autoPlayInterval = 5000 }: CarouselProps) 
                                     className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent flex flex-col justify-end p-8"
                                 >
                                     <h2 className="text-4xl font-black text-white mb-2 drop-shadow-lg transform translate-z-10">
-                                        {item.title}
+                                        {item.name}
                                     </h2>
                                     <p className="text-zinc-200 max-w-lg mb-6 drop-shadow-md text-lg line-clamp-2">
                                         {item.description}

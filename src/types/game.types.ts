@@ -1,41 +1,42 @@
-export type GameState = 'ACCEPTED' | 'REJECTED' | 'PENDING'
+import type {GameAchievementStub} from "@/types/achievement.type.ts";
+
+export const RegistrationState = {
+    PENDING: 'PENDING',
+    ACCEPTED: 'ACCEPTED',
+    REJECTED: 'REJECTED'
+} as const;
+
+export type RegistrationState = (typeof RegistrationState)[keyof typeof RegistrationState];
+
+export interface Rule {
+    description: string;
+}
 
 export interface Game {
-    id: number;
-    title: string;
+    id: string; //UUID
+    name: string;
     description: string;
-    image: string;
-    tags: string[];
-}
-
-export interface GameDto {
-    id: string;
-    title: string;
-    description: string;
-    picture: string;
-    creator: string;
+    price: number;
+    pictureUrl: string;
     gameUrl: string;
-    rules: string[];
-    tags: string[];
+    gameCreatorName: string;
+    registrationState: RegistrationState;
+    rules: Rule[];
+    achievements: GameAchievementStub[];
 }
 
-export interface UpdateGameRequest {
-    title: string;
+export interface RegisterGameRequest {
+    name: string;
     description: string;
-    picture: string;
+    price: number;
+    pictureUrl: string;
+    gameUrl: string;
+    gameCreatorName: string;
+    rules: { description: string }[];
+    achievements: { code: string; description: string }[];
 }
 
-export interface GameCardProps {
-    game: GameDto;
-    onAccept: (gameId: string) => Promise<void>;
-    onReject: (gameId: string) => Promise<void>;
-    onEdit: (game: GameDto) => void;
-    loading: Record<string, boolean>;
-}
-
-export interface UpdateGameModalProps {
-    game: GameDto | null;
-    onClose: () => void;
-    onUpdate: (gameId: string, data: UpdateGameRequest) => Promise<void>;
-    loading: boolean;
+export interface UpdateGameUrlRequest {
+    pictureUrl: string;
+    gameUrl: string;
 }

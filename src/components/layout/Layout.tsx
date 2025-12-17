@@ -11,7 +11,12 @@ const items = [
 
     { label: "Achievements", href: "/achievements" }
 
-];
+]
+const  hiddenRoutes = ["/admin", "/submit-game"];
+
+const shouldShowNavbar = !hiddenRoutes.some(route =>
+    location.pathname.startsWith(route)
+);
 
 export function Layout() {
     return (
@@ -43,7 +48,7 @@ export function Layout() {
             {/*    />*/}
             {/*</div>*/}
             <div className="h-[200px] relative flex items-center justify-center">
-                <GooeyNav items={items} />
+                {shouldShowNavbar && <GooeyNav items={items} />}
         </div>
             <main className="w-full px-4 sm:px-6 lg:px-8 py-8">
                 <Outlet />
