@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Button } from '../ui/Button';
+import { Button } from '@/components/ui/Button';
 import type { Game } from '@/types/game.types.ts';
-import { GameInfoOverlay } from './GameInfoOverlay';
+import { GameCarouselInfoOverlay } from './GameCarouselInfoOverlay.tsx';
 
 interface CarouselProps {
     items: Game[];
@@ -34,7 +34,7 @@ export function GameCarousel({ items, autoPlayInterval = 5000 }: CarouselProps) 
         if (Math.abs(offset) === 1) return { x: offset * 60 + '%', scale: 0.85, zIndex: 40, opacity: 0.7, rotateY: offset * -15, filter: 'brightness(0.6) blur(2px)' };
         if (Math.abs(offset) === 2) return { x: offset * 35 + '%', scale: 0.7, zIndex: 30, opacity: 0.4, rotateY: offset * -25, filter: 'brightness(0.4) blur(4px)' };
 
-        return { x: 0, scale: 0, zIndex: 0, opacity: 0, rotateY: 0, filter: 'brightness(0)' };
+        return { x: 0, scale: 0, zIndex: 0, opacity: 0, rotateY: 0, filter: 'brightness(0.01)' };
     };
 
     return (
@@ -100,7 +100,7 @@ export function GameCarousel({ items, autoPlayInterval = 5000 }: CarouselProps) 
                                 </motion.div>
                             )}
 
-                            <GameInfoOverlay
+                            <GameCarouselInfoOverlay
                                 game={item}
                                 isOpen={isShowingDetails}
                                 onClose={() => setDetailsGameId(null)}

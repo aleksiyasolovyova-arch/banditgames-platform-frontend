@@ -1,8 +1,10 @@
-import { Button } from '../components/ui/Button';
-import TiltedCard from '../components/ui/TiltedCard.tsx';
-import { GameCarousel } from '../components/gameLibrary/GameCarousel';
+import { Button } from '@/components/ui/Button';
+import TiltedCard from '@/components/ui/TiltedCard.tsx';
+import { GameCarousel } from '@/components/gameLibrary/GameCarousel';
 import { MOCK_GAMES_USER} from "@/mockData/games.ts";
-import type { Game } from '../types/game.types.ts';
+import type { Game } from '@/types/game.types.ts';
+
+//TODO: add in the logic for the lobby
 
 export function GamesPage() {
     const games = MOCK_GAMES_USER;
