@@ -1,16 +1,14 @@
 import {useForm, useFieldArray} from "react-hook-form";
-import {useAchievementsList} from "@/hooks/achievement/useAchievements.ts";
 import {useGameMutations} from "@/hooks/game/useGames.ts";
 import type{RegisterGameRequest} from "@/types/game.types.ts";
 
 export const CreateGameForm = ({ onSuccess }: { onSuccess: () => void }) => {
     const { registerGame } = useGameMutations();
-    const { data: availableAchievements } = useAchievementsList();
 
     const { register, control, handleSubmit, formState: { errors } } = useForm<RegisterGameRequest>({
         defaultValues: {
             rules: [{description: ''}], //starts with one empty rule
-            achievements: []
+            achievements: [{code: '', description: ''}]
         }
     })
 
@@ -40,7 +38,7 @@ export const CreateGameForm = ({ onSuccess }: { onSuccess: () => void }) => {
                 </div>
                 <div>
                     <label className="block text-sm font-medium">Price</label>
-                    <input type="number" {...register("price", { required: true, min: 0 })} className="border w-full p-2 rounded" />
+                    <input type="number" step="0.01" {...register("price", { required: true, min: 0 })} className="border w-full p-2 rounded" />
                 </div>
                 <div className="col-span-2">
                     <label className="block text-sm font-medium">Description</label>
@@ -78,32 +76,25 @@ export const CreateGameForm = ({ onSuccess }: { onSuccess: () => void }) => {
 
         {/*achievements*/}
             <div>
-                <label className="block text-sm font-medium mb-2">Linked Achievements</label>
+                <label className="block text-sm font-medium mb-2">Achievements</label>
                 {achFields.map((field, index) => (
-                    <div key={field.id} className="flex gap-2 mb-2 items-center bg-gray-50 p-2 rounded">
-                        {/* Read-only view of selected achievement */}
-                        <span className="font-mono text-sm">{field.code}</span>
-                        <span className="text-sm flex-1">{field.description}</span>
+                    <div key={field.id} className="flex gap-2 mb-2">
+                        <input
+                            {...register(`achievements.${index}.code`, { required: true })}
+                            placeholder="Achievement code"
+                            className="border w-1/3 p-2 rounded"
+                        />
+                        <input
+                            {...register(`achievements.${index}.description`, { required: true })}
+                            placeholder="Achievement description"
+                            className="border flex-1 p-2 rounded"
+                        />
                         <button type="button" onClick={() => removeAch(index)} className="text-red-500">Remove</button>
                     </div>
                 ))}
-
-                {/* achievement selector dropdown */}
-                <select
-                    className="border p-2 rounded w-full mt-2"
-                    onChange={(e) => {
-                        const selected = availableAchievements?.find(a => a.id === e.target.value);
-                        if (selected) {
-                            addAch({ code: selected.name, description: selected.description }); // Mapping Entity to DTO
-                            e.target.value = ""; // Reset dropdown
-                        }
-                    }}
-                >
-                    <option value="">Select an achievement to link...</option>
-                    {availableAchievements?.map(a => (
-                        <option key={a.id} value={a.id}>{a.name} (Value: {a.requiredValue})</option>
-                    ))}
-                </select>
+                <button type="button" onClick={() => addAch({ code: '', description: '' })} className="text-blue-600 text-sm">
+                    + Add Achievement
+                </button>
             </div>
 
             <div className="pt-4 border-t">
