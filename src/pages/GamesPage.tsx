@@ -1,11 +1,11 @@
 import { Button } from '../components/ui/Button';
 import TiltedCard from '../components/ui/TiltedCard.tsx';
 import { GameCarousel } from '../components/gameLibrary/GameCarousel';
-import { MOCK_GAMES} from "@/mockData/games.ts";
+import { MOCK_GAMES_USER} from "@/mockData/games.ts";
 import type { Game } from '../types/game.types.ts';
 
 export function GamesPage() {
-    const games = MOCK_GAMES;
+    const games = MOCK_GAMES_USER;
 
     return (
         <div className="w-full min-h-screen bg-zinc-950 text-zinc-100 font-sans pb-12">
@@ -39,9 +39,9 @@ export function GamesPage() {
                     {games.map((game) => (
                         <div key={game.id} className="flex justify-center w-full">
                             <TiltedCard
-                                imageSrc={game.image}
-                                altText={game.title}
-                                captionText={game.title}
+                                imageSrc={game.pictureUrl}
+                                altText={game.name}
+                                captionText={game.name}
                                 containerHeight="420px"
                                 containerWidth="100%"
                                 imageHeight="420px"
@@ -69,18 +69,11 @@ function GameCardOverlay({ game }: { game: Game }) {
     return (
         <div className="flex flex-col justify-between h-full w-full pointer-events-none">
             <div className="p-4 flex justify-between items-start pointer-events-auto">
-                <div className="flex gap-2">
-                    {game.tags.map(tag => (
-                        <span key={tag} className="px-2 py-1 text-[10px] uppercase tracking-wider font-bold bg-black/50 backdrop-blur-md rounded border border-white/10 text-white">
-                            {tag}
-                        </span>
-                    ))}
-                </div>
             </div>
 
             <div className="relative p-5 bg-gradient-to-t from-black via-black/80 to-transparent pt-12">
                 <h3 className="text-2xl font-bold text-white mb-2 leading-tight drop-shadow-lg">
-                    {game.title}
+                    {game.name}
                 </h3>
                 <div className="pointer-events-auto">
                     <Button variant="white" className="w-full">

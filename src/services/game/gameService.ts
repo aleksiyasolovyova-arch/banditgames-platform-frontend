@@ -1,6 +1,6 @@
 import axios from 'axios';
 import type {Game, UpdateGameUrlRequest, RegisterGameRequest} from "@/types/game.types.ts";
-import {MOCK_GAMES} from "@/mockData/games.ts";
+import {MOCK_GAMES_ADMIN} from "@/mockData/games.ts";
 
 const USE_MOCKS = true;
 const API_URL = import.meta.env.BACKEND_URL;
@@ -9,7 +9,7 @@ export const gameService = {
     getAllGames: async (): Promise<Game[]> => {
         if (USE_MOCKS) {
             await new Promise(r => setTimeout(r, 500));
-            return MOCK_GAMES;
+            return MOCK_GAMES_ADMIN;
         }
         const { data } = await axios.get(`${API_URL}/games`);
         return data;

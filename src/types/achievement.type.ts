@@ -7,6 +7,13 @@ export interface Achievement {
     requiredValue: number;
 }
 
+export interface GameAchievement {
+    code: string;
+    description: string;
+    gameId: string;
+    gameName: string;
+}
+
 export interface CreateAchievementRequest {
     achievementName: string;
     description: string;
