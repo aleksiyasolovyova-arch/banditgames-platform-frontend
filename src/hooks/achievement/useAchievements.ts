@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { achievementService} from "@/services/achievement/achievementService.ts";
 import type{ CreateAchievementRequest} from "@/types/achievement.type.ts";
-
+// Add these hooks for the admin page
 export const useAchievementsList = () => {
     return useQuery({
         queryKey: ['achievements'],

@@ -9,8 +9,9 @@ import {
     Trophy,
     ScrollText,
     Euro,
-    User, Loader2,
+    User, Loader2
 } from "lucide-react";
+import {CreatePlatformAchievements} from "@/components/achievements/CreatePlatformAchievements.tsx";
 
 export const AdminDashboardPage = () => {
     const {data: games, isLoading} = useGamesList();
@@ -28,6 +29,27 @@ export const AdminDashboardPage = () => {
 
     return (
         <div className="max-w-6xl mx-auto p-8">
+
+            <header
+                className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-zinc-800 pb-8">
+                <div>
+                    <div className="flex items-center gap-3 mb-2">
+                        <div className="p-2 bg-amber-500/10 rounded-lg">
+                            <Trophy className="text-amber-400 w-6 h-6"/>
+                        </div>
+                        <h1 className="text-3xl font-black text-white tracking-tight">
+                            Create Platform Achievements
+                        </h1>
+                    </div>
+                    <p className="text-zinc-400 max-w-xl">
+                        Define new global milestones for players.
+                    </p>
+                </div>
+            </header>
+            <section className="mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
+                <CreatePlatformAchievements />
+            </section>
+
             <header
                 className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-zinc-800 pb-8">
                 <div>
