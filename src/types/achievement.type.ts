@@ -35,3 +35,10 @@ export const AchievementType = {
 } as const;
 
 export type AchievementType = (typeof AchievementType)[keyof typeof AchievementType];
+
+export const ACHIEVEMENT_TYPES_LABELS: Record<AchievementType, string> = {
+    PLAY_COUNT: 'Games Played',
+    WIN_COUNT: 'Games Won',
+    FRIEND_COUNT: 'Friends Made',
+    RECORD_TIME: 'Speed Record (ms)'
+};

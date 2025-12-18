@@ -1,9 +1,7 @@
 //Original code from react bits, with refactoring
-//Refactor "impure" code
 import {
     useRef,
     useEffect,
-    useState,
     useCallback,
     type MouseEvent
 } from 'react'
@@ -24,11 +22,31 @@ export interface GooeyNavProps {
     colors?: number[];
 }
 
+
 const noise = (n = 1) => n / 2 - Math.random() * n
 
 const getXY = (distance: number, pointIndex: number, totalPoints: number): [number, number] => {
     const angle = ((360 + noise(8)) / totalPoints) * pointIndex * (Math.PI / 180)
     return [distance * Math.cos(angle), distance * Math.sin(angle)]
+}
+
+const createParticle = (
+    i: number,
+    t: number,
+    d: [number, number],
+    r: number,
+    particleCount: number,
+    colors: number[]
+) => {
+    const rotate = noise(r / 10)
+    return {
+        start: getXY(d[0], particleCount - i, particleCount),
+        end: getXY(d[1] + noise(7), particleCount - i, particleCount),
+        time: t,
+        scale: 1 + noise(0.2),
+        color: colors[Math.floor(Math.random() * colors.length)],
+        rotate: rotate > 0 ? (rotate + r / 20) * 10 : (rotate - r / 20) * 10
+    }
 }
 
 export const GooeyNav = ({
@@ -46,26 +64,7 @@ export const GooeyNav = ({
     const textRef = useRef<HTMLSpanElement>(null)
 
     const location = useLocation()
-    const [activeIndex, setActiveIndex] = useState<number>(0)
-
-    useEffect(() => {
-        const index = items.findIndex(item => item.href === location.pathname)
-        if (index !== -1) {
-            setActiveIndex(index)
-        }
-    }, [location.pathname, items])
-
-    const createParticle = (i: number, t: number, d: [number, number], r: number) => {
-        const rotate = noise(r / 10)
-        return {
-            start: getXY(d[0], particleCount - i, particleCount),
-            end: getXY(d[1] + noise(7), particleCount - i, particleCount),
-            time: t,
-            scale: 1 + noise(0.2),
-            color: colors[Math.floor(Math.random() * colors.length)],
-            rotate: rotate > 0 ? (rotate + r / 20) * 10 : (rotate - r / 20) * 10
-        }
-    }
+    const activeIndex = items.findIndex(item => item.href === location.pathname)
 
     const makeParticles = (element: HTMLElement) => {
         const d: [number, number] = particleDistances
@@ -76,7 +75,7 @@ export const GooeyNav = ({
 
         for (let i = 0; i < particleCount; i++) {
             const t = animationTime * 2 + noise(timeVariance * 2)
-            const p = createParticle(i, t, d, r)
+            const p = createParticle(i, t, d, r, particleCount, colors)
 
             element.classList.remove('active')
 
@@ -129,7 +128,7 @@ export const GooeyNav = ({
         textRef.current.innerText = element.innerText
     }, [])
 
-    const handleClick = (e: MouseEvent<HTMLAnchorElement>, index: number) => {
+    const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
         const liEl = e.currentTarget.closest('li')
         if (!liEl) return
 
@@ -173,6 +172,7 @@ export const GooeyNav = ({
 
     return (
         <>
+            {/*Needs the style tag to work properly, otherwise the animation won't work.'*/}
             <style>
                 {`
           :root { --linear-ease: linear(0, 0.068, 0.19 2.7%, 0.804 8.1%, 1.037, 1.199 13.2%, 1.245, 1.27 15.8%, 1.274, 1.272 17.4%, 1.249 19.1%, 0.996 28%, 0.949, 0.928 33.3%, 0.926, 0.933 36.8%, 1.001 45.6%, 1.013, 1.019 50.8%, 1.018 54.4%, 1 63.1%, 0.995 68%, 1.001 85%, 1); }
@@ -214,7 +214,7 @@ export const GooeyNav = ({
                             >
                                 <Link
                                     to={item.href}
-                                    onClick={e => handleClick(e, index)}
+                                    onClick={handleClick}
                                     className="outline-none py-2 px-4 inline-block font-bold tracking-wide"
                                     aria-current={activeIndex === index ? 'page' : undefined}
                                 >
@@ -225,7 +225,6 @@ export const GooeyNav = ({
                     </ul>
                 </nav>
 
-                {/* Visual Effects Container */}
                 <span
                     className="effect filter"
                     ref={filterRef}

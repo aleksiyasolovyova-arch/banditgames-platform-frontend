@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import  GooeyNav  from '@/components/layout/GooeyNav.tsx';
 // import PixelBlast from "@/components/ui/PixelBlast.tsx";
-{/* This effect is quite difficult to recreate faithfully using Tailwind, so a style tag is a necessary workaround */}
+
 
 const items = [
 

@@ -1,4 +1,4 @@
-import { Button } from '../components/ui/Button';
+import { Button } from '@/components/ui/Button';
 import TiltedCard from '@/components/ui/TiltedCard';
 import { MOCK_FRIENDS } from '@/mockData/friends.ts';
 import type { Friend } from '@/types/friend.types.ts';

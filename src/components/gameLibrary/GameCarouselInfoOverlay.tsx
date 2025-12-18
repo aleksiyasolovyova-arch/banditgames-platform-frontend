@@ -7,7 +7,7 @@ interface GameInfoOverlayProps {
     onClose: () => void;
 }
 
-export const GameInfoOverlay = ({ game, isOpen, onClose }: GameInfoOverlayProps) => {
+export const GameCarouselInfoOverlay = ({ game, isOpen, onClose }: GameInfoOverlayProps) => {
     return (
         <div
             className={`
