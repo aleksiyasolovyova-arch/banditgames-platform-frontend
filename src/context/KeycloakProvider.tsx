@@ -19,7 +19,7 @@ export const KeycloakProvider =({children}: KeycloakProviderProps) => {
         const initilaizeKeycloak = async () => {
             const keycloakConfig = {
                 //TODO: delete env and instead set it up in Orchestration
-                url: import.meta.env.VITE_KEYCLOAK_URL as string,
+                url: `http://${import.meta.env.VITE_KEYCLOAK_URL}`,
                 realm: import.meta.env.VITE_KEYCLOAK_REALM as string,
                 clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID as string,
             }
