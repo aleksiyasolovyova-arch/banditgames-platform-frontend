@@ -9,7 +9,10 @@ const items = [
 
     { label: "Friends", href: "/friends" },
 
-    { label: "Achievements", href: "/achievements" }
+    { label: "Achievements", href: "/achievements" },
+    { label: "Submit Game", href: "/submit-game" },
+    { label: "Admin", href: "/admin" }
+
 
 ]
 const  hiddenRoutes = ["/admin", "/submit-game"];

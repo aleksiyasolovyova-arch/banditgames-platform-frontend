@@ -1,6 +1,7 @@
 import { type ReactNode, useEffect, useState, useRef, useMemo} from 'react'
 import Keycloak from 'keycloak-js'
 import { KeycloakContext } from './KeycloakContext'
+import { initializeAxiosInterceptors} from "@/utils/axios.ts";
 
 interface KeycloakProviderProps {
     children: ReactNode
@@ -32,6 +33,7 @@ export const KeycloakProvider =({children}: KeycloakProviderProps) => {
             setAuthenticated(false)
             }finally {
                 setKeycloak(keycloakInstance)
+                initializeAxiosInterceptors(keycloakInstance)
             }
         }
         initilaizeKeycloak()
