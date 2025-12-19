@@ -11,12 +11,12 @@ export const gameService = {
             await new Promise(r => setTimeout(r, 500));
             return MOCK_GAMES_ADMIN;
         }
-        const { data } = await axios.get(`${API_URL}/games`);
+        const { data } = await axios.get(`http://${API_URL}/games`);
         return data;
     },
 
     createGame: async (payload: RegisterGameRequest): Promise<Game> => {
-        const {data} = await axios.post(`${API_URL}/games`, payload);
+        const {data} = await axios.post(`http://${API_URL}/games`, payload);
         return data;
     },
 
