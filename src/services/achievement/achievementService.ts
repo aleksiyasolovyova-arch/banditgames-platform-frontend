@@ -3,7 +3,7 @@ import type {Achievement, CreateAchievementRequest} from "@/types/achievement.ty
 import {MOCK_PLATFORM_ACHIEVEMENTS} from "@/mockData/achievements.ts";
 
 const USE_MOCKS = true;
-const API_URL = import.meta.env.BACKEND_URL;
+const API_URL = import.meta.env.VITE_BACKEND_URL;
 
 export const achievementService = {
     getAll: async (): Promise<Achievement[]> => {

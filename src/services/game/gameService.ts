@@ -3,7 +3,7 @@ import type {Game, UpdateGameUrlRequest, RegisterGameRequest} from "@/types/game
 import {MOCK_GAMES_ADMIN} from "@/mockData/games.ts";
 
 const USE_MOCKS = true;
-const API_URL = import.meta.env.BACKEND_URL;
+const API_URL = import.meta.env.VITE_BACKEND_URL;
 
 export const gameService = {
     getAllGames: async (): Promise<Game[]> => {

@@ -2,8 +2,8 @@ import type {GameAchievementStub} from "@/types/achievement.type.ts";
 
 export const RegistrationState = {
     PENDING: 'PENDING',
-    ACCEPTED: 'ACCEPTED',
-    REJECTED: 'REJECTED'
+    PASSED: 'PASSED',
+    FAILED: 'FAILED'
 } as const;
 
 export type RegistrationState = (typeof RegistrationState)[keyof typeof RegistrationState];
