@@ -1,21 +1,28 @@
-import axios, {AxiosHeaders} from 'axios';
-import type Keycloak from 'keycloak-js';
+import axios from "axios";
+import Keycloak from "keycloak-js";
 
-let keycloakInstance: Keycloak | null = null;
+let interceptorId: number | null = null;
 
 export const initializeAxiosInterceptors = (keycloak: Keycloak) => {
-    keycloakInstance = keycloak;
+    if (interceptorId !== null) {
+        axios.interceptors.request.eject(interceptorId);
+    }
 
-    axios.interceptors.request.use(async (config) => {
-        if (!keycloakInstance?.authenticated) return config;
+    interceptorId = axios.interceptors.request.use(
+        async (config) => {
+            if (keycloak.authenticated && keycloak.token) {
+                try {
+                    await keycloak.updateToken(30);
 
-        await keycloakInstance.updateToken(30);
-
-        if (!config.headers) {
-            config.headers = new AxiosHeaders();
+                    config.headers.Authorization = `Bearer ${keycloak.token}`;
+                } catch (error) {
+                    console.error("Failed to refresh token", error);
+                }
+            }
+            return config;
+        },
+        (error) => {
+            return Promise.reject(error);
         }
-
-        config.headers.set('Authorization', `Bearer ${keycloakInstance.token}`)
-        return config;
-    });
+    );
 };
