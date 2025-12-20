@@ -23,6 +23,7 @@ export interface Game {
     registrationState: RegistrationState;
     rules: Rule[];
     achievements: GameAchievementStub[];
+    playableWithAI: boolean;
 }
 
 export interface RegisterGameRequest {
@@ -34,6 +35,7 @@ export interface RegisterGameRequest {
     gameCreatorName: string;
     rules: { description: string }[];
     achievements: { code: string; description: string }[];
+    playableWithAI: boolean;
 }
 
 export interface UpdateGameUrlRequest {

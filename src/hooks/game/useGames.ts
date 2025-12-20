@@ -5,9 +5,9 @@ import type{RegisterGameRequest, UpdateGameUrlRequest} from "@/types/game.types.
 export const useGamesList = () => {
     return useQuery({
         queryKey: ['games'],
-        queryFn: gameService.getAllGames,
-    });
-};
+        queryFn: gameService.loadAllGames,
+    })
+}
 
 //Use cases
 export const useGameMutations = () => {
@@ -16,23 +16,28 @@ export const useGameMutations = () => {
     const registerGame = useMutation({
         mutationFn: (data: RegisterGameRequest) => gameService.createGame(data),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ['games'] }),
-    });
+    })
 
     const updateUrls = useMutation({
         mutationFn: (vars: { id: string; data: UpdateGameUrlRequest }) =>
             gameService.updateGameUrls(vars.id, vars.data),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ['games'] }),
-    });
+    })
 
-    const acceptGame = useMutation({
-        mutationFn: gameService.acceptGame,
+    const toggleAi = useMutation({
+        mutationFn: (id: string) => gameService.togglePlayableWithAI(id),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ['games'] }),
-    });
+    })
 
-    const rejectGame = useMutation({
-        mutationFn: gameService.rejectGame,
+    const passGame = useMutation({
+        mutationFn: gameService.passGame,
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ['games'] }),
-    });
+    })
 
-    return { registerGame, updateUrls, acceptGame, rejectGame };
+    const failGame = useMutation({
+        mutationFn: gameService.failGame,
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['games'] }),
+    })
+
+    return { registerGame, updateUrls, toggleAi, passGame, failGame };
 }
