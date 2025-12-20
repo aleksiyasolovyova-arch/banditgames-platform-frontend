@@ -1,9 +1,10 @@
-import { Outlet } from 'react-router-dom';
+import {Outlet, useLocation} from 'react-router-dom';
 import  GooeyNav  from '@/components/layout/GooeyNav.tsx';
+import {useKeycloak} from "@/hooks/useKeycloak.tsx";
 // import PixelBlast from "@/components/ui/PixelBlast.tsx";
 
 
-const items = [
+const baseItems = [
 
     { label: "Games", href: "/" },
 
@@ -11,14 +12,30 @@ const items = [
 
     { label: "Achievements", href: "/achievements" }
 
-]
-const  hiddenRoutes = ["/admin", "/submit-game"];
 
-const shouldShowNavbar = !hiddenRoutes.some(route =>
-    location.pathname.startsWith(route)
-);
+]
 
 export function Layout() {
+    const location = useLocation();
+    const { keycloak, authenticated } = useKeycloak();
+
+    const  hiddenRoutes = ["/admin", "/submit-game"]
+
+
+    const shouldShowNavbar = !hiddenRoutes.some(route =>
+        location.pathname.startsWith(route)
+    )
+
+    const handleLogout = () => {
+        keycloak?.logout({
+            redirectUri: window.location.origin + '/'
+        })
+    }
+
+    const items = authenticated
+        ? [...baseItems, { label: "Logout", href: "#", onClick: handleLogout }]
+        : baseItems
+
     return (
         <div className="min-h-screen bg-background-primary">
             //TODO: make this look good

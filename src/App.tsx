@@ -6,6 +6,7 @@ import {AchievementsPage} from "@/pages/AchievementsPage.tsx";
 import {KeycloakProvider} from "@/context/KeycloakProvider.tsx";
 import {AdminDashboardPage} from "@/pages/admin/AdminDashboardPage.tsx";
 import {CreateGamePage} from "@/pages/developer/CreateGamePage.tsx";
+import {IndexPage} from "@/pages/IndexPage.tsx";
 function App() {
     return (
         <KeycloakProvider>
@@ -13,8 +14,10 @@ function App() {
             <Routes>
                 <Route path="/" element={<Layout />}>
                     <Route path="/admin" element={<AdminDashboardPage />} />
-                    <Route index element={<GamesPage />} />
-                    <Route path="/submit-game" element={<CreateGamePage />} />                    <Route path="achievements" element={<AchievementsPage />} />
+                    <Route path="/games" element={<GamesPage />} />
+                    <Route index element={<IndexPage />} />
+                    <Route path="/submit-game" element={<CreateGamePage />} />
+                    <Route path="achievements" element={<AchievementsPage />} />
                     <Route path="friends" element={<FriendsPage />} />
                 </Route>
             </Routes>

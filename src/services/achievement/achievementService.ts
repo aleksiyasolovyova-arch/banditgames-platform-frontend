@@ -11,11 +11,11 @@ export const achievementService = {
             await new Promise(r => setTimeout(r, 500));
             return MOCK_PLATFORM_ACHIEVEMENTS;
         }
-        const { data } = await axios.get(`${API_URL}/achievements`);
+        const { data } = await axios.get(`http://${API_URL}/achievements`);
         return data;
     },
     createAchievement: async (payload: CreateAchievementRequest): Promise<Achievement> => {
-        const {data} = await axios.post(`${API_URL}/achievements`, payload);
+        const {data} = await axios.post(`http://${API_URL}/achievements`, payload);
         return data;
     }
 }
