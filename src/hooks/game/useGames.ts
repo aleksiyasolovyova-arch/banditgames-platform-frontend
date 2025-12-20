@@ -9,6 +9,13 @@ export const useGamesList = () => {
     })
 }
 
+export const usePublicGamesList = () => {
+    return useQuery({
+        queryKey: ['games'],
+        queryFn: gameService.loadPublicGames,
+    })
+}
+
 //Use cases
 export const useGameMutations = () => {
     const queryClient = useQueryClient();

@@ -5,11 +5,15 @@ import type { RoleConfig, RoleType } from "@/types/user.types";
 import {useKeycloak} from "@/hooks/useKeycloak.tsx";
 import {PlayerAuthModal} from "@/components/auth/PlayerAuthModal.tsx";
 import {useState} from "react";
+import {usePublicGamesList} from "@/hooks/game/useGames.ts";
+import {GameCarousel} from "@/components/gameLibrary/GameCarousel.tsx";
 
 export const IndexPage = () => {
     const navigate = useNavigate();
     const { keycloak, authenticated } = useKeycloak();
     const [showPlayerModal, setShowPlayerModal] = useState(false);
+
+    const { data: games } = usePublicGamesList();
 
     const handleRoleSelect = (role: RoleType) => {
         switch (role) {
@@ -39,7 +43,7 @@ export const IndexPage = () => {
             try {
                 await keycloak.login({
                     redirectUri: window.location.origin + '/admin'
-                });
+                })
             } catch (error) {
                 console.error("Keycloak login failed", error);
             }
@@ -88,9 +92,14 @@ export const IndexPage = () => {
                         Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">Path</span>
                     </h1>
                     <p className="text-zinc-400 text-lg max-w-2xl mx-auto leading-relaxed">
-                        Welcome to the platform. Select your role below to access the games library, developer tools, or administration console.
-                    </p>
+                        Welcome to the platform. Check out our latest releases below, or select your role to get started.                    </p>
                 </div>
+
+                {games && games.length > 0 && (
+                    <div className="w-full max-w-[90vw] animate-in fade-in duration-1000 slide-in-from-bottom-4">
+                        <GameCarousel items={games} />
+                    </div>
+                )}
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-in slide-in-from-bottom-8 fade-in duration-1000 fill-mode-backwards delay-150">
                     {roles.map((role) => (
