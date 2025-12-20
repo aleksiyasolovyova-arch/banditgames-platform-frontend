@@ -3,15 +3,22 @@ import { Gamepad2, Code2, ShieldCheck } from "lucide-react";
 import { RoleCard } from "@/components/ui/RoleCard";
 import type { RoleConfig, RoleType } from "@/types/user.types";
 import {useKeycloak} from "@/hooks/useKeycloak.tsx";
+import {PlayerAuthModal} from "@/components/auth/PlayerAutModal.tsx";
+import {useState} from "react";
 
 export const IndexPage = () => {
     const navigate = useNavigate();
     const { keycloak, authenticated } = useKeycloak();
+    const [showPlayerModal, setShowPlayerModal] = useState(false);
 
     const handleRoleSelect = (role: RoleType) => {
         switch (role) {
             case 'player':
-                navigate('/games');
+                if (authenticated) {
+                    navigate('/games');
+                } else {
+                    setShowPlayerModal(true);
+                }
                 break;
             case 'developer':
                 navigate('/submit-game');
@@ -95,11 +102,10 @@ export const IndexPage = () => {
                     ))}
                 </div>
 
-                <footer className="text-center pt-12 animate-in fade-in duration-1000 delay-300">
-                    <p className="text-zinc-600 text-xs font-mono uppercase tracking-widest">
-                        Team 11 Platform &copy; {new Date().getFullYear()}
-                    </p>
-                </footer>
+                <PlayerAuthModal
+                    isOpen={showPlayerModal}
+                    onClose={() => setShowPlayerModal(false)}
+                />
             </main>
         </div>
     );

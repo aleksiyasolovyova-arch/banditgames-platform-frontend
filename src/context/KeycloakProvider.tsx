@@ -2,6 +2,7 @@ import { type ReactNode, useEffect, useState, useRef, useMemo} from 'react'
 import Keycloak from 'keycloak-js'
 import { KeycloakContext } from './KeycloakContext'
 import { initializeAxiosInterceptors} from "@/utils/axios.ts";
+import axios from "axios";
 
 interface KeycloakProviderProps {
     children: ReactNode
@@ -28,9 +29,32 @@ export const KeycloakProvider =({children}: KeycloakProviderProps) => {
             try {
                 const isAuthenticated = await keycloakInstance.init({ onLoad: 'check-sso' })
                 setAuthenticated(isAuthenticated)
+
+                if (isAuthenticated) {
+                    const pendingRegistration = localStorage.getItem('pending_registration');
+
+                    if (pendingRegistration === 'true') {
+                        try {
+                            await axios.post(
+                                `${import.meta.env.VITE_API_URL}/players`,
+                                {},
+                                {
+                                    headers: {
+                                        Authorization: `Bearer ${keycloakInstance.token}`
+                                    }
+                                }
+                            );
+                            console.log('Player profile created successfully');
+                        } catch (error) {
+                            console.error('Failed to sync player profile:', error);
+                        } finally {
+                            localStorage.removeItem('pending_registration');
+                        }
+                    }
+                }
             }catch (error) {
-            console.error("Keycloak initialization failed: ",error)
-            setAuthenticated(false)
+                console.error("Keycloak initialization failed: ",error)
+                setAuthenticated(false)
             }finally {
                 setKeycloak(keycloakInstance)
                 initializeAxiosInterceptors(keycloakInstance)
