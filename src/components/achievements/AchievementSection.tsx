@@ -14,7 +14,7 @@ export const AchievementSection = ({ title, achievements }: AchievementSectionPr
         achievement: PlatformAchievementWithProgress | GameAchievementWithStatus
     ): achievement is PlatformAchievementWithProgress => {
         return 'requiredValue' in achievement;
-    };
+    }
 
     return (
         <section className="mb-16">
