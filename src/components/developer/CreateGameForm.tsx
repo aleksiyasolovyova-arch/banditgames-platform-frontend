@@ -8,7 +8,8 @@ export const CreateGameForm = ({ onSuccess }: { onSuccess: () => void }) => {
     const { register, control, handleSubmit, formState: { errors } } = useForm<RegisterGameRequest>({
         defaultValues: {
             rules: [{description: ''}], //starts with one empty rule
-            achievements: [{code: '', description: ''}]
+            achievements: [{code: '', description: ''}],
+            playableWithAI: false
         }
     })
 
@@ -47,6 +48,16 @@ export const CreateGameForm = ({ onSuccess }: { onSuccess: () => void }) => {
                 <div>
                     <label className="block text-sm font-medium">Creator Name</label>
                     <input {...register("gameCreatorName", { required: true })} className="border w-full p-2 rounded" />
+                </div>
+                <div className="flex items-center h-full pt-6">
+                    <label className="flex items-center gap-3 cursor-pointer p-2 rounded hover:bg-gray-50 transition-colors w-full">
+                        <input
+                            type="checkbox"
+                            {...register("playableWithAI")}
+                            className="w-5 h-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                        />
+                        <span className="text-sm font-medium text-gray-700">Playable with AI?</span>
+                    </label>
                 </div>
             </div>
 
