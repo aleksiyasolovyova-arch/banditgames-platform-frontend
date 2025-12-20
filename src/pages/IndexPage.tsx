@@ -3,7 +3,7 @@ import { Gamepad2, Code2, ShieldCheck } from "lucide-react";
 import { RoleCard } from "@/components/ui/RoleCard";
 import type { RoleConfig, RoleType } from "@/types/user.types";
 import {useKeycloak} from "@/hooks/useKeycloak.tsx";
-import {PlayerAuthModal} from "@/components/auth/PlayerAutModal.tsx";
+import {PlayerAuthModal} from "@/components/auth/PlayerAuthModal.tsx";
 import {useState} from "react";
 
 export const IndexPage = () => {
