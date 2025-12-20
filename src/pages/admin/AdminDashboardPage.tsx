@@ -36,9 +36,9 @@ export const AdminDashboardPage = () => {
                     <div className="p-2 bg-amber-500/10 rounded-lg">
                         <Trophy className="text-amber-400 w-5 h-5"/>
                     </div>
-                    <h2 className="text-xl font-bold text-white tracking-tight">
+                    <h1 className="text-xl font-bold text-white tracking-tight">
                         Platform Achievements Library
-                    </h2>
+                    </h1>
                 </div>
                 <PlatformAchievementList />
             </section>

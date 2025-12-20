@@ -25,7 +25,7 @@ export const PlatformAchievementList = () => {
                                 <Hash size={10}/> {ach.type}
                             </span>
                             <span className="text-[10px] font-mono text-amber-500 flex items-center gap-1">
-                                <Target size={10}/> Require Value: {ach.requiredValue}
+                                <Target size={10}/> Required Value: {ach.requiredValue}
                             </span>
                         </div>
                     </div>
