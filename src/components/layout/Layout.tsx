@@ -10,9 +10,7 @@ const baseItems = [
 
     { label: "Friends", href: "/friends" },
 
-    { label: "Achievements", href: "/achievements" },
-    { label: "Submit Game", href: "/submit-game" },
-    { label: "Admin", href: "/admin" }
+    { label: "Achievements", href: "/achievements" }
 
 
 ]
