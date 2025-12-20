@@ -10,6 +10,7 @@ import { Link, useLocation } from 'react-router-dom'
 interface GooeyNavItem {
     label: string;
     href: string;
+    onClick?: () => void;
 }
 
 export interface GooeyNavProps {
@@ -128,7 +129,7 @@ export const GooeyNav = ({
         textRef.current.innerText = element.innerText
     }, [])
 
-    const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
+    const handleClick = (e: MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
         const liEl = e.currentTarget.closest('li')
         if (!liEl) return
 
@@ -212,14 +213,27 @@ export const GooeyNav = ({
                                     activeIndex === index ? 'active !text-black' : ''
                                 }`}
                             >
-                                <Link
-                                    to={item.href}
-                                    onClick={handleClick}
-                                    className="outline-none py-2 px-4 inline-block font-bold tracking-wide"
-                                    aria-current={activeIndex === index ? 'page' : undefined}
-                                >
-                                    {item.label}
-                                </Link>
+                                {item.onClick ? (
+                                    <button
+                                        onClick={(e) => {
+                                            handleClick(e);
+                                            item.onClick?.();
+                                        }}
+                                        className="outline-none py-2 px-4 inline-block font-bold tracking-wide bg-transparent border-none cursor-pointer"
+                                        style={{ color: 'inherit' }}
+                                    >
+                                        {item.label}
+                                    </button>
+                                ) : (
+                                    <Link
+                                        to={item.href}
+                                        onClick={handleClick}
+                                        className="outline-none py-2 px-4 inline-block font-bold tracking-wide"
+                                        aria-current={activeIndex === index ? 'page' : undefined}
+                                    >
+                                        {item.label}
+                                    </Link>
+                                )}
                             </li>
                         ))}
                     </ul>
