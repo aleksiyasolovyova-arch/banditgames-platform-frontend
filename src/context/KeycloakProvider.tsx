@@ -36,8 +36,8 @@ export const KeycloakProvider =({children}: KeycloakProviderProps) => {
                     if (pendingRegistration === 'true') {
                         try {
                             await axios.post(
-                                `http://${import.meta.env.VITE_API_URL}/players`,
-                                {},
+                                `http://${import.meta.env.VITE_BACKEND_URL}/players`,
+
                                 {
                                     headers: {
                                         Authorization: `Bearer ${keycloakInstance.token}`
