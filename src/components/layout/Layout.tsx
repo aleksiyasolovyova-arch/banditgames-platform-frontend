@@ -5,7 +5,7 @@ import {useKeycloak} from "@/hooks/useKeycloak.tsx";
 
 const baseItems = [
 
-    { label: "Games", href: "/" },
+    { label: "Games", href: "/games" },
 
     { label: "Friends", href: "/friends" },
 
@@ -18,12 +18,11 @@ export function Layout() {
     const location = useLocation();
     const { keycloak, authenticated } = useKeycloak();
 
-    const  hiddenRoutes = ["/admin", "/submit-game", "/"]
+    const  hiddenRoutes = ["/admin", "/submit-game"]
 
-
-    const shouldShowNavbar = !hiddenRoutes.some(route =>
-        location.pathname.startsWith(route)
-    )
+    const isNavbarHidden =
+        location.pathname === "/" ||
+        hiddenRoutes.some(prefix => location.pathname.startsWith(prefix))
 
     const handleLogout = () => {
         keycloak?.logout({
@@ -37,9 +36,11 @@ export function Layout() {
 
     return (
         <div className="min-h-screen bg-background-primary">
-            <div className="h-[200px] relative flex items-center justify-center">
-                {shouldShowNavbar && <GooeyNav items={items} />}
-        </div>
+            {!isNavbarHidden && (
+                <div className="h-[200px] relative flex items-center justify-center">
+                    <GooeyNav items={items} />
+                </div>
+            )}
             <main className="w-full px-4 sm:px-6 lg:px-8 py-8">
                 <Outlet />
             </main>

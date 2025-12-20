@@ -12,10 +12,10 @@ function App() {
         <KeycloakProvider>
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Layout />}>
+                <Route element={<Layout />}>
                     <Route path="/admin" element={<AdminDashboardPage />} />
                     <Route path="/games" element={<GamesPage />} />
-                    <Route index element={<IndexPage />} />
+                    <Route path="/" element={<IndexPage />} />
                     <Route path="/submit-game" element={<CreateGamePage />} />
                     <Route path="achievements" element={<AchievementsPage />} />
                     <Route path="friends" element={<FriendsPage />} />
