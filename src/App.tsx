@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Layout } from '@/components/layout/Layout';
-import { GamesPage } from '@/pages/GamesPage';
-import { FriendsPage } from '@/pages/FriendsPage';
-import {AchievementsPage} from "@/pages/AchievementsPage.tsx";
+import { GamesPage } from '@/pages/player/GamesPage.tsx';
+import { FriendsPage } from '@/pages/player/FriendsPage.tsx';
+import {AchievementsPage} from "@/pages/player/AchievementsPage.tsx";
 import {KeycloakProvider} from "@/context/KeycloakProvider.tsx";
 import {AdminDashboardPage} from "@/pages/admin/AdminDashboardPage.tsx";
 import {CreateGamePage} from "@/pages/developer/CreateGamePage.tsx";
