@@ -5,7 +5,6 @@ import {
     Plus,
     Trash2,
     Gamepad2,
-    DollarSign,
     User,
     Image as ImageIcon,
     Link,
@@ -74,20 +73,6 @@ export const CreateGameForm = ({ onSuccess }: { onSuccess: () => void }) => {
                             placeholder="Briefly describe the gameplay..."
                             className={`${inputClass} resize-none`}
                         />
-                    </div>
-
-                    <div>
-                        <label className={labelClass}>Price (EUR)</label>
-                        <div className="relative">
-                            <DollarSign className="absolute left-3 top-2.5 text-zinc-500" size={16} />
-                            <input
-                                type="number"
-                                step="0.01"
-                                {...register("price", { required: true, min: 0 })}
-                                className={`${inputClass} pl-10`}
-                                placeholder="0.00"
-                            />
-                        </div>
                     </div>
 
                     <div>

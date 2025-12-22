@@ -47,7 +47,6 @@ export interface GameUnauthenticated {
     playableWithAI: boolean;
 }
 
-//TODO: GEt rid of price in the form as well
 export interface RegisterGameRequest {
     name: string;
     description: string;
