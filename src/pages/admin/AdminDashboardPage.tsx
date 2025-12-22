@@ -10,7 +10,6 @@ import {
     Pencil,
     Trophy,
     ScrollText,
-    Euro,
     User, Loader2, Bot
 } from "lucide-react";
 
@@ -130,7 +129,6 @@ export const AdminDashboardPage = () => {
                                     </div>
 
                                     <div className="flex flex-wrap gap-4 text-xs font-medium text-zinc-500 border-t border-white/5 pt-3">
-                                        <div className="flex items-center gap-1.5"><Euro size={14} className="text-emerald-500"/><span className="text-zinc-300">{game.price === 0 ? "Free" : `€${game.price}`}</span></div>
                                         <div className="flex items-center gap-1.5"><ScrollText size={14} className="text-blue-500"/><span className="text-zinc-300">{game.rules.length} Rules</span></div>
                                         <div className="flex items-center gap-1.5"><Trophy size={14} className="text-amber-500"/><span className="text-zinc-300">{game.achievements.length} Achievements</span></div>
                                     </div>
