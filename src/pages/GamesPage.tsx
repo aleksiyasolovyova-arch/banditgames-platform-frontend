@@ -1,9 +1,9 @@
-import { Button } from '@/components/ui/Button';
 import TiltedCard from '@/components/ui/TiltedCard.tsx';
 import {useState} from "react";
 import {useGameListPlayer} from "@/hooks/game/useGames.ts";
 import {Loader2, Search} from "lucide-react";
-import type {GamePlayer} from "@/types/game.types.ts";
+import {GameCardOverlay} from "@/components/gameLibrary/GameCardOverlay.tsx";
+import {FeaturedPodium} from "@/components/gameLibrary/FeaturedPodium.tsx";
 
 //TODO: add in the logic for the lobby
 
@@ -24,9 +24,17 @@ export function GamesPage() {
         game.name.toLowerCase().includes(searchQuery.toLowerCase())
     ) || []
 
+    const favoriteGame = filteredGames.find(g => g.isFavourite);
+
     return (
-        <div className="w-full min-h-screen bg-zinc-950 text-zinc-100 font-sans pb-12 pt-24">
+        <div className="w-full min-h-screen bg-zinc-950 text-zinc-100 font-sans pb-12 pt-2">
             <div className="mx-auto px-6 max-w-7xl">
+
+                {favoriteGame && (
+                    <div className="mb-32 w-full">
+                        <FeaturedPodium game={favoriteGame} />
+                    </div>
+                )}
 
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 border-b border-zinc-800 pb-8">
                     <div>
@@ -77,33 +85,12 @@ export function GamesPage() {
                         ))}
                     </div>
                 ) : (
+                    !favoriteGame &&(
                     <div className="text-center py-20 bg-zinc-900/30 rounded-xl border border-zinc-800 border-dashed">
                         <p className="text-zinc-500">No games found matching your search.</p>
                     </div>
-                )}
+                ))}
             </div>
         </div>
     )
-}
-
-//May move this later to a separate component
-
-function GameCardOverlay({ game }: { game: GamePlayer }) {
-    return (
-        <div className="flex flex-col justify-between h-full w-full pointer-events-none">
-            <div className="p-4 flex justify-between items-start pointer-events-auto">
-            </div>
-
-            <div className="relative p-5 bg-gradient-to-t from-black via-black/80 to-transparent pt-12">
-                <h3 className="text-2xl font-bold text-white mb-2 leading-tight drop-shadow-lg">
-                    {game.name}
-                </h3>
-                <div className="pointer-events-auto">
-                    <Button variant="white" className="w-full">
-                        PLAY NOW
-                    </Button>
-                </div>
-            </div>
-        </div>
-    );
 }
