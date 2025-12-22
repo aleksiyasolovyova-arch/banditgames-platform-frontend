@@ -17,20 +17,25 @@ export function useAddFriend() {
             const successMsg = await friendService.sendFriendRequest(username);
             setStatus('success');
             setMessage(successMsg);
-            return true; // Return success to clear input if needed
-        } catch (err: any) {
+            return true;
+        } catch (err: unknown) {
             setStatus('error');
-            setMessage(err.message || 'An error occurred');
+
+            if (err instanceof Error) {
+                setMessage(err.message);
+            } else {
+                setMessage('An unexpected error occurred');
+            }
             return false;
         } finally {
             setIsLoading(false);
         }
-    };
+    }
 
     const resetStatus = () => {
         setStatus('idle');
         setMessage('');
-    };
+    }
 
     return { sendRequest, resetStatus, isLoading, status, message };
 }
