@@ -1,14 +1,14 @@
 import { Button } from '@/components/ui/Button';
 import TiltedCard from '@/components/ui/TiltedCard.tsx';
-import type { Game } from '@/types/game.types.ts';
 import {useState} from "react";
-import {usePublicGamesList} from "@/hooks/game/useGames.ts";
+import {useGameListPlayer} from "@/hooks/game/useGames.ts";
 import {Loader2, Search} from "lucide-react";
+import type {GamePlayer} from "@/types/game.types.ts";
 
 //TODO: add in the logic for the lobby
 
 export function GamesPage() {
-    const { data: games, isLoading } = usePublicGamesList();
+    const { data: games, isLoading } = useGameListPlayer();
     const [searchQuery, setSearchQuery] = useState('');
 
     if (isLoading) {
@@ -20,7 +20,7 @@ export function GamesPage() {
         )
     }
 
-    const filteredGames = games?.filter(game =>
+    const filteredGames  = games?.filter(game =>
         game.name.toLowerCase().includes(searchQuery.toLowerCase())
     ) || []
 
@@ -88,7 +88,7 @@ export function GamesPage() {
 
 //May move this later to a separate component
 
-function GameCardOverlay({ game }: { game: Game }) {
+function GameCardOverlay({ game }: { game: GamePlayer }) {
     return (
         <div className="flex flex-col justify-between h-full w-full pointer-events-none">
             <div className="p-4 flex justify-between items-start pointer-events-auto">

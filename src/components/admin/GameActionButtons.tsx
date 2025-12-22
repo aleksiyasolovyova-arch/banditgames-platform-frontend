@@ -1,8 +1,8 @@
-import {type Game, RegistrationState} from "@/types/game.types.ts";
+import {type GameAdmin, RegistrationState} from "@/types/game.types.ts";
 import {useGameMutations} from "@/hooks/game/useGames.ts";
 
 interface Props {
-    game: Game
+    game: GameAdmin
 }
 
 export const GameActionButtons = ({game}: Props) => {

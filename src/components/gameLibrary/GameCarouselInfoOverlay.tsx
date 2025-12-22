@@ -1,8 +1,8 @@
 import {ScrollText, User, X} from 'lucide-react'
-import type { Game } from '@/types/game.types'
+import type { GameUnauthenticated } from '@/types/game.types'
 
 interface GameInfoOverlayProps {
-    game: Game;
+    game: GameUnauthenticated;
     isOpen: boolean;
     onClose: () => void;
 }

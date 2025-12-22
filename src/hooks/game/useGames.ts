@@ -2,17 +2,24 @@ import {useQuery, useMutation, useQueryClient} from "@tanstack/react-query";
 import {gameService} from "@/services/game/gameService.ts";
 import type{RegisterGameRequest, UpdateGameUrlRequest} from "@/types/game.types.ts";
 
-export const useGamesList = () => {
+export const useGameListAdmin = () => {
     return useQuery({
         queryKey: ['games'],
-        queryFn: gameService.loadAllGames,
+        queryFn: gameService.loadGamesAdmin,
     })
 }
 
-export const usePublicGamesList = () => {
+export const useGameListPlayer = () => {
     return useQuery({
         queryKey: ['games'],
-        queryFn: gameService.loadPublicGames,
+        queryFn: gameService.loadGamesPlayer,
+    })
+}
+
+export const useGameListUnathenticated = () => {
+    return useQuery({
+        queryKey: ['games'],
+        queryFn: gameService.loadGamesUnauthenticated,
     })
 }
 

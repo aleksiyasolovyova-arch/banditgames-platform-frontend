@@ -1,8 +1,8 @@
 import { useState } from "react";
-import {useGamesList} from "@/hooks/game/useGames.ts";
+import {useGameListAdmin} from "@/hooks/game/useGames.ts";
 import {GameActionButtons} from "@/components/admin/GameActionButtons.tsx";
 import {UpdateGameModal} from "@/components/admin/UpdateGameModal.tsx";
-import type {Game} from "@/types/game.types.ts"
+import type {GameAdmin} from "@/types/game.types.ts"
 import {CreatePlatformAchievements} from "@/components/achievements/CreatePlatformAchievements.tsx";
 import {PlatformAchievementList} from "@/components/admin/PlatformAchievementList.tsx";
 import {
@@ -16,8 +16,8 @@ import {
 
 export const AdminDashboardPage = () => {
 
-    const {data: games, isLoading} = useGamesList();
-    const [editingGame, setEditingGame] = useState<Game | null>(null);
+    const {data: games, isLoading} = useGameListAdmin();
+    const [editingGame, setEditingGame] = useState<GameAdmin | null>(null);
 
     if (isLoading) {
         return (

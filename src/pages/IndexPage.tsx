@@ -5,7 +5,7 @@ import type { RoleConfig, RoleType } from "@/types/user.types";
 import {useKeycloak} from "@/hooks/useKeycloak.tsx";
 import {PlayerAuthModal} from "@/components/auth/PlayerAuthModal.tsx";
 import {useState} from "react";
-import {usePublicGamesList} from "@/hooks/game/useGames.ts";
+import {useGameListUnathenticated} from "@/hooks/game/useGames.ts";
 import {GameCarousel} from "@/components/gameLibrary/GameCarousel.tsx";
 
 export const IndexPage = () => {
@@ -13,7 +13,7 @@ export const IndexPage = () => {
     const { keycloak, authenticated } = useKeycloak();
     const [showPlayerModal, setShowPlayerModal] = useState(false);
 
-    const { data: games } = usePublicGamesList();
+    const { data: games } = useGameListUnathenticated();
 
     const handleRoleSelect = (role: RoleType) => {
         switch (role) {

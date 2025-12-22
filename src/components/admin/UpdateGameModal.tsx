@@ -3,12 +3,12 @@ import { useForm } from "react-hook-form";
 import { Bot, Loader2 } from "lucide-react"; // Optional icons
 import { Modal } from "@/components/ui/Modal";
 import { useGameMutations } from "@/hooks/game/useGames.ts";
-import type { Game } from "@/types/game.types.ts";
+import type { GameAdmin } from "@/types/game.types.ts";
 
 interface Props {
     isOpen: boolean;
     onClose: () => void;
-    game: Game;
+    game: GameAdmin;
 }
 
 interface FormValues {
