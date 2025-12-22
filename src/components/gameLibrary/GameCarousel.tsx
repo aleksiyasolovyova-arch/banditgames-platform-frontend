@@ -86,7 +86,6 @@ export function GameCarousel({ items, autoPlayInterval = 5000 }: CarouselProps) 
                                         {item.description}
                                     </p>
                                     <div className="flex gap-4 relative z-20">
-                                        <Button variant="white">Play Now</Button>
                                         <Button
                                             variant="glass"
                                             onClick={(e) => {
