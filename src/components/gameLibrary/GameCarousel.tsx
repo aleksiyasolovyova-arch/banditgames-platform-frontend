@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
-import type { Game } from '@/types/game.types.ts';
+import type { GameUnauthenticated } from '@/types/game.types.ts';
 import { GameCarouselInfoOverlay } from './GameCarouselInfoOverlay.tsx';
 
 interface CarouselProps {
-    items: Game[];
+    items: GameUnauthenticated[];
     autoPlayInterval?: number;
 }
 
@@ -86,7 +86,6 @@ export function GameCarousel({ items, autoPlayInterval = 5000 }: CarouselProps) 
                                         {item.description}
                                     </p>
                                     <div className="flex gap-4 relative z-20">
-                                        <Button variant="white">Play Now</Button>
                                         <Button
                                             variant="glass"
                                             onClick={(e) => {

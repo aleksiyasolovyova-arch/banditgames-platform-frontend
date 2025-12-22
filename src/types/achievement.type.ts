@@ -1,4 +1,4 @@
-export interface Achievement {
+export interface PlatformAchievement {
     id: string;
     name: string;
     description: string;

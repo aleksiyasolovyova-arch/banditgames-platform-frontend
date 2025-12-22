@@ -12,28 +12,50 @@ export interface Rule {
     description: string;
 }
 
-export interface Game {
+export interface GameAdmin {
     id: string; //UUID
     name: string;
     description: string;
-    price: number;
     pictureUrl: string;
     gameUrl: string;
     gameCreatorName: string;
     registrationState: RegistrationState;
     rules: Rule[];
     achievements: GameAchievementStub[];
+    playableWithAI: boolean;
+}
+
+export interface GamePlayer {
+    id: string;
+    name: string;
+    description: string;
+    pictureUrl: string;
+    gameUrl: string;
+    gameCreatorName: string;
+    rules: Rule[];
+    isFavourite: boolean;
+    playableWithAI: boolean;
+}
+
+export interface GameUnauthenticated {
+    id: string;
+    name: string;
+    description: string;
+    pictureUrl: string;
+    gameCreatorName: string;
+    rules: Rule[];
+    playableWithAI: boolean;
 }
 
 export interface RegisterGameRequest {
     name: string;
     description: string;
-    price: number;
     pictureUrl: string;
     gameUrl: string;
     gameCreatorName: string;
     rules: { description: string }[];
     achievements: { code: string; description: string }[];
+    playableWithAI: boolean;
 }
 
 export interface UpdateGameUrlRequest {

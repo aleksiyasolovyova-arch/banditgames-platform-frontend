@@ -15,7 +15,7 @@ export const GameModeModal = ({ isOpen, onClose, onSelectMode, gameName }: Props
     const modes = [
         {
             id: 'AI' as GameMode,
-            title: 'Practice vs AI',
+            title: 'Play against AI',
             desc: 'Instant match against a bot.',
             icon: Bot,
             color: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 hover:border-emerald-500'
@@ -29,7 +29,7 @@ export const GameModeModal = ({ isOpen, onClose, onSelectMode, gameName }: Props
         },
         {
             id: 'STRANGER' as GameMode,
-            title: 'Ranked Match',
+            title: 'Play vs Stranger',
             desc: 'Find an opponent online.',
             icon: Swords,
             color: 'bg-rose-500/10 text-rose-400 border-rose-500/20 hover:border-rose-500'

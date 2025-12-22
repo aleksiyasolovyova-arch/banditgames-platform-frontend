@@ -1,12 +1,12 @@
-import {type Game, RegistrationState} from "@/types/game.types.ts";
+import {type GameAdmin, RegistrationState} from "@/types/game.types.ts";
 import {useGameMutations} from "@/hooks/game/useGames.ts";
 
 interface Props {
-    game: Game
+    game: GameAdmin
 }
 
 export const GameActionButtons = ({game}: Props) => {
-    const {acceptGame, rejectGame} = useGameMutations();
+    const {passGame, failGame} = useGameMutations();
     const isPending = game.registrationState === RegistrationState.PENDING;
 
     if (!isPending) {
@@ -21,13 +21,13 @@ export const GameActionButtons = ({game}: Props) => {
     return (
         <div className="flex gap-2">
             <button
-                onClick={() => acceptGame.mutate(game.id)}
-                disabled={acceptGame.isPending}
+                onClick={() => passGame.mutate(game.id)}
+                disabled={passGame.isPending}
                 className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50"
             >Accept</button>
             <button
-                onClick={() => rejectGame.mutate(game.id)}
-                disabled={rejectGame.isPending}
+                onClick={() => failGame.mutate(game.id)}
+                disabled={failGame.isPending}
                 className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50"
             >Reject</button>
         </div>

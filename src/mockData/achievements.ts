@@ -1,6 +1,6 @@
-import {type Achievement, AchievementType, type GameAchievement} from '../types/achievement.type.ts';
+import {type PlatformAchievement, AchievementType, type GameAchievement} from '../types/achievement.type.ts';
 
-export const MOCK_PLATFORM_ACHIEVEMENTS: Achievement[] = [
+export const MOCK_PLATFORM_ACHIEVEMENTS: PlatformAchievement[] = [
     {
         id: 'p1',
         name: 'Social Butterfly',
@@ -61,7 +61,7 @@ export const MOCK_UNLOCKED_GAME_ACHIEVEMENTS = [
 ]
 
 // Helper type for platform achievements with progress
-export interface PlatformAchievementWithProgress extends Achievement {
+export interface PlatformAchievementWithProgress extends PlatformAchievement {
     currentValue: number;
     isUnlocked: boolean;
 }
