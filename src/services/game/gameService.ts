@@ -27,7 +27,7 @@ export const gameService = {
             await new Promise(r => setTimeout(r, 500));
             return MOCK_GAMES_USER;
         }
-        const { data } = await axios.get(`http://${API_URL}/player/games`);
+        const { data } = await axios.get(`http://${API_URL}/games`);
         return data;
     },
 
@@ -46,22 +46,22 @@ export const gameService = {
     },
 
     updateGameUrls: async (id: string, payload: UpdateGameUrlRequest): Promise<GameAdmin> => {
-        const {data} = await axios.put(`${API_URL}/games/${id}`, payload);
+        const {data} = await axios.put(`http://${API_URL}/games/${id}`, payload);
         return data;
     },
 
     togglePlayableWithAI: async (id: string): Promise<GameAdmin> => {
-        const { data } = await axios.put(`${API_URL}/games/${id}/toggle`);
+        const { data } = await axios.put(`http://${API_URL}/games/${id}/toggle`);
         return data;
     },
 
     passGame: async (id: string): Promise<GameAdmin> => {
-        const {data} = await axios.put(`${API_URL}/games/${id}/accept`);
+        const {data} = await axios.put(`http://${API_URL}/games/${id}/accept`);
         return data;
     },
 
     failGame: async (id: string): Promise<GameAdmin> => {
-        const {data} = await axios.put(`${API_URL}/games/${id}/reject`);
+        const {data} = await axios.put(`http://${API_URL}/games/${id}/reject`);
         return data;
     }
 }

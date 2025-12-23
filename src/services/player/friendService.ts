@@ -23,7 +23,6 @@ export const friendService = {
         return data;
     },
 
-//TODO: talk with radu about the fact that in the ui, the user inputs a username, while the backend expects a uuid
     requestFriendship: async (username: string): Promise<FriendshipDto> => {
         if (USE_MOCKS) {
             return new Promise((resolve, reject) => {
