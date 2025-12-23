@@ -18,6 +18,14 @@ export function AllFriendsView() {
         return <div className="text-center text-red-400">Failed to load friends.</div>;
     }
 
+    if (friends.length === 0) {
+        return (
+            <div className="text-center py-12">
+                <p className="text-zinc-400">You don't have any friends yet. Add one to get started!</p>
+            </div>
+        );
+    }
+
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 animate-in fade-in duration-500">
             {friends.map((friend) => (

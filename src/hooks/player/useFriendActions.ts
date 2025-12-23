@@ -1,41 +1,35 @@
 import { useState } from 'react';
-import { friendService } from '@/services/player/friendService';
+import {useSendFriendRequest} from "@/hooks/player/useFriends.ts";
 
 export function useAddFriend() {
-    const [isLoading, setIsLoading] = useState(false);
-    const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
     const [message, setMessage] = useState('');
+    const sendMutation = useSendFriendRequest();
 
-    const sendRequest = async (username: string) => {
-        if (!username.trim()) return;
-
-        setIsLoading(true);
-        setStatus('idle');
-        setMessage('');
+    const sendRequest = async (username: string): Promise<boolean> => {
+        if (!username.trim()) return false;
 
         try {
-            const successMsg = await friendService.sendFriendRequest(username);
-            setStatus('success');
-            setMessage(successMsg);
+            await sendMutation.mutateAsync(username);
+            setMessage('Friend request sent successfully!');
             return true;
         } catch (err: unknown) {
-            setStatus('error');
-
             if (err instanceof Error) {
                 setMessage(err.message);
             } else {
                 setMessage('An unexpected error occurred');
             }
             return false;
-        } finally {
-            setIsLoading(false);
         }
     }
 
     const resetStatus = () => {
-        setStatus('idle');
         setMessage('');
     }
 
-    return { sendRequest, resetStatus, isLoading, status, message };
+    return { sendRequest,
+        resetStatus,
+        isLoading: sendMutation.isPending,
+        status: sendMutation.isError ? 'error' : sendMutation.isSuccess ? 'success' : 'idle',
+        message,
+    }
 }

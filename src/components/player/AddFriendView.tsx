@@ -4,13 +4,13 @@ import { Search, Check, ShieldAlert, Loader2 } from 'lucide-react';
 import { useAddFriend } from '@/hooks/player/useFriendActions';
 
 export function AddFriendView() {
-    const [username, setUsername] = useState('');
+    const [recipientId, setRecipientId] = useState('');
     const { sendRequest, resetStatus, isLoading, status, message } = useAddFriend();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const success = await sendRequest(username);
-        if (success) setUsername('');
+        const success = await sendRequest(recipientId);
+        if (success) setRecipientId('');
     };
 
     return (
@@ -33,12 +33,12 @@ export function AddFriendView() {
                         </div>
                         <input
                             type="text"
-                            value={username}
+                            value={recipientId}
                             onChange={(e) => {
-                                setUsername(e.target.value);
+                                setRecipientId(e.target.value);
                                 resetStatus();
                             }}
-                            placeholder="Enter a username..."
+                            placeholder="Enter player UUID..."
                             className="w-full bg-transparent p-4 text-white placeholder-zinc-600 focus:outline-none"
                             disabled={isLoading}
                         />
@@ -46,7 +46,7 @@ export function AddFriendView() {
                             <Button
                                 type="submit"
                                 variant="primary"
-                                disabled={!username || isLoading}
+                                disabled={!recipientId || isLoading}
                                 className="whitespace-nowrap min-w-[140px]"
                             >
                                 {isLoading ? <Loader2 className="animate-spin" size={20} /> : 'Send Request'}

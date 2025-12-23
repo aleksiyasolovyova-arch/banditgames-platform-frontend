@@ -1,24 +1,71 @@
-import { useQuery, useMutation} from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { friendService } from "@/services/player/friendService";
+import {useUserId} from "@/hooks/useKeycloak";
 
 export function useFriendsList() {
-    return useQuery({
-        queryKey: ['friends', 'list'],
-        queryFn: friendService.getFriends,
-        staleTime: 1000 * 60 * 5, // Cache for 5 minutes
-    })
-}
+    const userId = useUserId();
 
-export function useFriendRequests() {
     return useQuery({
-        queryKey: ['friends', 'requests'],
-        queryFn: friendService.getRequests,
+        queryKey: ['friends', 'list', userId],
+        queryFn: () => friendService.getFriends(userId),
+        staleTime: 1000 * 60 * 5,
+        enabled: !!userId ,
     });
 }
 
+export function useFriendRequests() {
+    const userId = useUserId();
+
+    return useQuery({
+        queryKey: ['friends', 'requests', userId],
+        queryFn: () => friendService.getRequests(userId),
+        staleTime: 1000 * 60, // Cache for 1 minute (requests change more frequently)
+        enabled: !!userId,
+    })
+}
+
 export function useSendFriendRequest() {
+    const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (username: string) => friendService.sendFriendRequest(username),
+        mutationFn: (recipientId: string) =>
+            friendService.requestFriendship(recipientId),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['friends', 'requests'] });
+        }
     })
+}
+
+export function useAcceptFriendship() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (friendshipId: string) => friendService.acceptFriendship(friendshipId),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['friends', 'list'] });
+            queryClient.invalidateQueries({ queryKey: ['friends', 'requests'] });
+        },
+    });
+}
+
+export function useDeclineFriendship() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (friendshipId: string) => friendService.declineFriendship(friendshipId),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['friends', 'requests'] });
+        },
+    });
+}
+
+export function useEndFriendship() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (friendshipId: string) => friendService.endFriendship(friendshipId),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['friends', 'list'] });
+        },
+    });
 }
