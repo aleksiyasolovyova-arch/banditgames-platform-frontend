@@ -10,3 +10,13 @@ export const useKeycloak = () => {
 
     return context
 }
+
+export const useUserId = (): string => {
+    const { keycloak } = useKeycloak();
+
+    if (!keycloak?.tokenParsed?.sub) {
+        throw new Error("User ID not available");
+    }
+
+    return keycloak.tokenParsed.sub;
+}
