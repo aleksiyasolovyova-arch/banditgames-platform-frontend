@@ -5,9 +5,9 @@ export function useAddFriend() {
     const [message, setMessage] = useState('');
     const sendMutation = useSendFriendRequest();
 
-    const sendRequest = async (username: string): Promise<boolean> => {
+    const sendRequest = async (recipientUsername: string): Promise<boolean> => {
         try {
-            await sendMutation.mutateAsync(username);
+            await sendMutation.mutateAsync(recipientUsername);
             setMessage('Friend request sent successfully!');
             return true;
         } catch (err: unknown) {

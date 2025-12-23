@@ -32,7 +32,7 @@ export const friendService = {
                 }, 800);
             })
         }
-        const { data } = await axios.post(`http://${API_URL}/friendships`, { username });
+        const { data } = await axios.post(`http://${API_URL}/friendships`, { recipientUsername: username });
         return data;
     },
     acceptFriendship: async (friendshipId: string): Promise<FriendshipDto> => {
