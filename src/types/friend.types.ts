@@ -3,7 +3,7 @@ export type FriendshipState = 'REQUESTED' | 'FRIENDS' | 'DECLINED' | 'ENDED';
 export interface Friend {
     id: string;
     friendshipId: string;
-    username: string;
+    recipientUsername: string;
     pictureUrl: string;
     state: FriendshipState;
 }

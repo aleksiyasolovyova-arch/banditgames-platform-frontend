@@ -7,7 +7,7 @@ export function useFriendsList() {
 
     return useQuery({
         queryKey: ['friends', 'list', userId],
-        queryFn: () => friendService.getFriends,
+        queryFn: () => friendService.getFriends(),
         staleTime: 1000 * 60 * 5,
         enabled: !!userId ,
     });
@@ -18,7 +18,7 @@ export function useFriendRequests() {
 
     return useQuery({
         queryKey: ['friends', 'requests', userId],
-        queryFn: () => friendService.getRequests,
+        queryFn: () => friendService.getRequests(),
         staleTime: 1000 * 60, // Cache for 1 minute (requests change more frequently)
         enabled: !!userId,
     })
@@ -28,8 +28,8 @@ export function useSendFriendRequest() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (username: string) =>
-            friendService.requestFriendship(username),
+        mutationFn: (recipientUsername: string) =>
+            friendService.requestFriendship(recipientUsername),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['friends', 'requests'] });
         }

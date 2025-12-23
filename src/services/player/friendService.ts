@@ -11,7 +11,7 @@ export const friendService = {
         if (USE_MOCKS) {
             return MOCK_FRIENDS;
         }
-        const { data } = await axios.get(`http://${API_URL}/friends`);
+        const { data } = await axios.get(`http://${API_URL}/friendships`);
         return data;
     },
 
@@ -19,7 +19,7 @@ export const friendService = {
         if (USE_MOCKS) {
             return MOCK_REQUESTS
         }
-        const { data } = await axios.get(`http://${API_URL}/friends/requests`);
+        const { data } = await axios.get(`http://${API_URL}/friendships/requests`);
         return data;
     },
 
@@ -83,7 +83,7 @@ export const friendService = {
                 )
             )
         }
-        const {data} = await axios.put(`http://${API_URL}/friendships/${friendshipId}/end`);
+        const {data} = await axios.post(`http://${API_URL}/friendships/${friendshipId}/end`);
         return data;
     }
 }

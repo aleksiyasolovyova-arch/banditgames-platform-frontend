@@ -32,7 +32,7 @@ export function FriendCardOverlay({ friend, variant }: FriendCardOverlayProps) {
             <div className="relative p-6 bg-gradient-to-t from-black via-black/80 to-transparent pt-16">
                 <div className="mb-6">
                     <h3 className="text-3xl font-bold text-white leading-tight drop-shadow-md">
-                        {friend.username}
+                        {friend.recipientUsername}
                     </h3>
                 </div>
 
