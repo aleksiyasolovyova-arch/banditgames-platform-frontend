@@ -22,7 +22,7 @@ export interface FriendshipDto {
 export interface FriendRequest {
     id: string; // Player ID of requester
     friendshipId: string; // Friendship ID for mutations
-    username: string;
+    recipientUsername: string;
     pictureUrl: string;
     state: 'REQUESTED'; // Always REQUESTED for this view
 }
