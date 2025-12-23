@@ -6,8 +6,6 @@ export function useAddFriend() {
     const sendMutation = useSendFriendRequest();
 
     const sendRequest = async (username: string): Promise<boolean> => {
-        if (!username.trim()) return false;
-
         try {
             await sendMutation.mutateAsync(username);
             setMessage('Friend request sent successfully!');

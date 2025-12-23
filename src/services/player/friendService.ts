@@ -2,24 +2,24 @@ import axios from 'axios';
 import {MOCK_FRIENDS, MOCK_REQUESTS} from '@/mockData/friends.ts';
 import type {Friend, FriendshipDto} from '@/types/friend.types.ts';
 
-const USE_MOCKS = true;
+const USE_MOCKS = false;
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 
 //TODO: for getFriends and getRequests it's part of the read model, so endpoints tbd
 export const friendService = {
-    getFriends: async (playerId:string): Promise<Friend[]> => {
+    getFriends: async (): Promise<Friend[]> => {
         if (USE_MOCKS) {
             return MOCK_FRIENDS;
         }
-        const { data } = await axios.get(`http://${API_URL}/players/${playerId}/friends`);
+        const { data } = await axios.get(`http://${API_URL}/friends`);
         return data;
     },
 
-    getRequests: async (playerId:string): Promise<Friend[]> => {
+    getRequests: async (): Promise<Friend[]> => {
         if (USE_MOCKS) {
             return MOCK_REQUESTS
         }
-        const { data } = await axios.get(`http://${API_URL}/players/${playerId}/friend-requests`);
+        const { data } = await axios.get(`http://${API_URL}/friends/requests`);
         return data;
     },
 
