@@ -3,7 +3,7 @@ import { Users, Inbox, UserPlus } from 'lucide-react';
 import { AllFriendsView } from '@/components/player/AllFriendsView';
 import { FriendRequestsView } from '@/components/player/FriendRequestsView';
 import { AddFriendView } from '@/components/player/AddFriendView';
-import type { FriendTab } from '@/types/friend.types';
+import type { FriendTab } from '@/types/player.types.ts';
 import {useFriendRequests} from "@/hooks/player/useFriends.ts";
 import {NavButton} from "@/components/ui/FriendsNavButton.tsx";
 

@@ -4,13 +4,14 @@ import { Search, Check, ShieldAlert, Loader2 } from 'lucide-react';
 import { useAddFriend } from '@/hooks/player/useFriendActions';
 
 export function AddFriendView() {
-    const [recipientId, setRecipientId] = useState('');
+    // Changed state from recipientId to username
+    const [username, setUsername] = useState('');
     const { sendRequest, resetStatus, isLoading, status, message } = useAddFriend();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const success = await sendRequest(recipientId);
-        if (success) setRecipientId('');
+        const success = await sendRequest(username);
+        if (success) setUsername('');
     };
 
     return (
@@ -33,12 +34,12 @@ export function AddFriendView() {
                         </div>
                         <input
                             type="text"
-                            value={recipientId}
+                            value={username}
                             onChange={(e) => {
-                                setRecipientId(e.target.value);
+                                setUsername(e.target.value);
                                 resetStatus();
                             }}
-                            placeholder="Enter player UUID..."
+                            placeholder="Enter username..."
                             className="w-full bg-transparent p-4 text-white placeholder-zinc-600 focus:outline-none"
                             disabled={isLoading}
                         />
@@ -46,7 +47,7 @@ export function AddFriendView() {
                             <Button
                                 type="submit"
                                 variant="primary"
-                                disabled={!recipientId || isLoading}
+                                disabled={!username || isLoading}
                                 className="whitespace-nowrap min-w-[140px]"
                             >
                                 {isLoading ? <Loader2 className="animate-spin" size={20} /> : 'Send Request'}

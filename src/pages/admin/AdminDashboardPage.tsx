@@ -86,7 +86,7 @@ export const AdminDashboardPage = () => {
                     ) : (
                         games?.map(game => (
                             <div
-                                key={game.id}
+                                key={game.gameId}
                                 className={`
                                     group relative backdrop-blur-sm border rounded-xl p-5 transition-all duration-300 flex flex-col md:flex-row gap-6
                                     ${game.registrationState === 'PENDING'

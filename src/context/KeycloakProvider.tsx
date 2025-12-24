@@ -3,6 +3,7 @@ import Keycloak from 'keycloak-js'
 import { KeycloakContext } from './KeycloakContext'
 import { initializeAxiosInterceptors} from "@/utils/axios.ts";
 import axios from "axios";
+import {Loader2} from "lucide-react";
 
 interface KeycloakProviderProps {
     children: ReactNode
@@ -12,6 +13,7 @@ export const KeycloakProvider =({children}: KeycloakProviderProps) => {
     const isRun = useRef<boolean>(false)
     const [keycloak, setKeycloak] = useState<Keycloak | null>(null)
     const [authenticated, setAuthenticated] = useState<boolean>(false)
+    const [isInitialized, setIsInitialized] = useState<boolean>(false)
 
     useEffect(() => {
         if (isRun.current) return
@@ -19,7 +21,6 @@ export const KeycloakProvider =({children}: KeycloakProviderProps) => {
 
         const initilaizeKeycloak = async () => {
             const keycloakConfig = {
-                //TODO: delete env and instead set it up in Orchestration
                 url: `http://${import.meta.env.VITE_KEYCLOAK_URL}`,
                 realm: import.meta.env.VITE_KEYCLOAK_REALM as string,
                 clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID as string,
@@ -58,15 +59,20 @@ export const KeycloakProvider =({children}: KeycloakProviderProps) => {
             }finally {
                 setKeycloak(keycloakInstance)
                 initializeAxiosInterceptors(keycloakInstance)
+                setIsInitialized(true)
             }
         }
         initilaizeKeycloak()
     }, [])
-        const value = useMemo(() => ({keycloak, authenticated}), [keycloak, authenticated])
-         return (
-             <KeycloakContext.Provider value={value}>
-                 {children}
-             </KeycloakContext.Provider>
-         )
+        const value = useMemo(() => ({keycloak, authenticated, isInitialized}), [keycloak, authenticated, isInitialized])
+    if (!isInitialized) {
+        return <Loader2 className="w-10 h-10 animate-spin text-indigo-500 mb-4" />
+    }
+
+    return (
+        <KeycloakContext.Provider value={value}>
+            {children}
+        </KeycloakContext.Provider>
+    )
 }
 
