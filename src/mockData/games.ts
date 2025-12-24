@@ -4,7 +4,7 @@ import {type GameAdmin, type GamePlayer, type GameUnauthenticated, RegistrationS
 
 export const MOCK_GAMES_ADMIN: GameAdmin[] = [
     {
-        id: '2b692bc6-973d-493b-a43f-6665fb2ea404',
+        gameId: '2b692bc6-973d-493b-a43f-6665fb2ea404',
         name: 'Cyber Punk 2088',
         description: 'A futuristic RPG awaiting approval. Check the buttons!',
         pictureUrl: 'https://placehold.co/600x400/222222/FFF?text=Pending',
@@ -16,7 +16,7 @@ export const MOCK_GAMES_ADMIN: GameAdmin[] = [
         playableWithAI: false
     },
     {
-        id: '5e66169c-ca6a-4ebe-bac7-529e49df9d55',
+        gameId: '5e66169c-ca6a-4ebe-bac7-529e49df9d55',
         name: 'Fantasy Quest Online',
         description: 'This game is already live. Buttons should be hidden.',
         pictureUrl: 'https://placehold.co/600x400/228B22/FFF?text=Accepted',
@@ -28,7 +28,7 @@ export const MOCK_GAMES_ADMIN: GameAdmin[] = [
         playableWithAI:true
     },
     {
-        id: 'e2552a7f-ee75-4096-94ae-e84f10019c07',
+        gameId: 'e2552a7f-ee75-4096-94ae-e84f10019c07',
         name: 'Broken Game',
         description: 'This game was rejected due to bugs.',
         pictureUrl: 'https://placehold.co/600x400/8B0000/FFF?text=Rejected',
@@ -40,7 +40,7 @@ export const MOCK_GAMES_ADMIN: GameAdmin[] = [
         playableWithAI:false
     },
     {
-        id: '5e66169c-ca6a-4ebe-bac7-529e49df9d55',
+        gameId: '5e66169c-ca6a-4ebe-bac7-529e49df9d55',
         name: 'Fantasy Quest Online',
         description: 'Explore a vast world, fight dragons, and build your legend in this MMORPG.',
         pictureUrl: 'https://img.goodfon.com/wallpaper/big/d/1f/mountain-fantasy-artwork-wizard-fantasy.webp',
@@ -52,7 +52,7 @@ export const MOCK_GAMES_ADMIN: GameAdmin[] = [
         playableWithAI: false
     },
     {
-        id: 'ac772949-fe12-4c58-8521-602dbb844e50',
+        gameId: 'ac772949-fe12-4c58-8521-602dbb844e50',
         name: 'Neon Drift 2000',
         description: 'High-octane synthwave racing. Compete for the fastest lap times on the leaderboard.',
         pictureUrl: 'https://static.cdprojektred.com/cms.cdprojektred.com/16x9_big/872822c5e50dc71f345416098d29fc3ae5cd26c1-1280x720.jpg',
@@ -64,7 +64,7 @@ export const MOCK_GAMES_ADMIN: GameAdmin[] = [
         playableWithAI: true
     },
     {
-        id: 'e8e35784-6194-4dbf-af1e-3ae9d2384c33',
+        gameId: 'e8e35784-6194-4dbf-af1e-3ae9d2384c33',
         name: 'Cosmic Logic',
         description: 'Relaxing space-themed puzzles to train your brain.',
         pictureUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7i2kLvAFDPWsNCh-8E3P_SxP6AE2oIth9pQ&s',
@@ -76,7 +76,7 @@ export const MOCK_GAMES_ADMIN: GameAdmin[] = [
         playableWithAI: false
     },
     {
-        id: '520a5896-7d07-4352-b148-c629f80122f8',
+        gameId: '520a5896-7d07-4352-b148-c629f80122f8',
         name: 'Galactic Marine',
         description: 'The ultimate space shooter experience with 4K graphics.',
         pictureUrl: 'https://upload.wikimedia.org/wikipedia/commons/c/c3/NGC_4414_%28NASA-med%29.jpg',

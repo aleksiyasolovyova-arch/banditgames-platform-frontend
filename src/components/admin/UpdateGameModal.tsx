@@ -49,14 +49,14 @@ export const UpdateGameModal = ({ isOpen, onClose, game }: Props) => {
         if (data.pictureUrl !== game.pictureUrl || data.gameUrl !== game.gameUrl) {
             promises.push(
                 updateUrls.mutateAsync({
-                    id: game.id,
+                    id: game.gameId,
                     data: { pictureUrl: data.pictureUrl, gameUrl: data.gameUrl }
                 })
             );
         }
 
         if (data.playableWithAI !== game.playableWithAI) {
-            promises.push(toggleAi.mutateAsync(game.id));
+            promises.push(toggleAi.mutateAsync(game.gameId));
         }
 
         try {

@@ -21,12 +21,12 @@ export const GameActionButtons = ({game}: Props) => {
     return (
         <div className="flex gap-2">
             <button
-                onClick={() => passGame.mutate(game.id)}
+                onClick={() => passGame.mutate(game.gameId)}
                 disabled={passGame.isPending}
                 className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50"
             >Accept</button>
             <button
-                onClick={() => failGame.mutate(game.id)}
+                onClick={() => failGame.mutate(game.gameId)}
                 disabled={failGame.isPending}
                 className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50"
             >Reject</button>

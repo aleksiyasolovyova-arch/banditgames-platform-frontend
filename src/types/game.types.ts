@@ -13,7 +13,7 @@ export interface Rule {
 }
 
 export interface GameAdmin {
-    id: string; //UUID
+    gameId: string; //UUID
     name: string;
     description: string;
     pictureUrl: string;
