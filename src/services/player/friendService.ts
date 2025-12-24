@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {MOCK_FRIENDS, MOCK_REQUESTS} from '@/mockData/friends.ts';
-import type {Friend, FriendshipDto} from '@/types/friend.types.ts';
+import type {Friend, FriendshipDto} from '@/types/player.types.ts';
 
 const USE_MOCKS = false;
 const API_URL = import.meta.env.VITE_BACKEND_URL;

@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/Button';
-import type { Friend, FriendRequest } from '@/types/friend.types';
+import type { Friend, FriendRequest } from '@/types/player.types.ts';
 import { useAcceptFriendship, useDeclineFriendship, useEndFriendship } from '@/hooks/player/useFriends';
 import { Check, X, Loader2 } from 'lucide-react';
 

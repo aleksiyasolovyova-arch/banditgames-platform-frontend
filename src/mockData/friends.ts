@@ -1,4 +1,4 @@
-import type { Friend, FriendRequest } from '@/types/friend.types.ts';
+import type { Friend, FriendRequest } from '@/types/player.types.ts';
 
 export const MOCK_FRIENDS: Friend[] = [
     {
