@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Search, Check, ShieldAlert, Loader2 } from 'lucide-react';
-import { useAddFriend } from '@/hooks/player/useFriendActions';
+import { useAddFriend } from '@/hooks/player/useFriends';
 
 export function AddFriendView() {
     // Changed state from recipientId to username

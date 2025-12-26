@@ -6,10 +6,20 @@ import { AddFriendView } from '@/components/player/AddFriendView';
 import type { FriendTab } from '@/types/player.types.ts';
 import {useFriendRequests} from "@/hooks/player/useFriends.ts";
 import {NavButton} from "@/components/ui/FriendsNavButton.tsx";
+import {useUserId} from "@/hooks/useKeycloak.tsx";
 
 export function FriendsPage() {
     const [activeTab, setActiveTab] = useState<FriendTab>('all');
+    const userId = useUserId();
     const { data: requests } = useFriendRequests();
+
+    if (!userId) {
+        return (
+            <div className="flex items-center justify-center h-screen bg-zinc-950">
+                <p className="text-zinc-400">Loading...</p>
+            </div>
+        );
+    }
 
     const requestCount = requests?.length || 0;
     return (

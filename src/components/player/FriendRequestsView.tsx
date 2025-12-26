@@ -29,7 +29,7 @@ export function FriendRequestsView() {
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 animate-in fade-in duration-500">
             {requests.map((request) => (
-                <div key={request.id} className="flex justify-center w-full">
+                <div key={request.friendShipId} className="flex justify-center w-full">
                     <TiltedCard
                         imageSrc={request.pictureUrl}
                         altText={request.username}

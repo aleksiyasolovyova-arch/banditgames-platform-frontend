@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/Button';
-import type { Friend, FriendRequest } from '@/types/player.types.ts';
+import type {Friend, FriendRequest} from '@/types/player.types.ts';
 import { useAcceptFriendship, useDeclineFriendship, useEndFriendship } from '@/hooks/player/useFriends';
 import { Check, X, Loader2 } from 'lucide-react';
 
@@ -13,16 +13,20 @@ export function FriendCardOverlay({ friend, variant }: FriendCardOverlayProps) {
     const declineMutation = useDeclineFriendship();
     const endMutation = useEndFriendship();
 
+
+    console.log('Friend object:', friend);
+    console.log('FriendshipId:', friend.friendShipId);
+
     const handleAccept = () => {
-        acceptMutation.mutate(friend.friendshipId);
+        acceptMutation.mutate(friend.friendShipId);
     };
 
     const handleDecline = () => {
-        declineMutation.mutate(friend.friendshipId);
+        declineMutation.mutate(friend.friendShipId);
     };
 
     const handleRemove = () => {
-        endMutation.mutate(friend.friendshipId);
+        endMutation.mutate(friend.friendShipId);
     };
 
     const isLoading = acceptMutation.isPending || declineMutation.isPending || endMutation.isPending;
@@ -32,7 +36,7 @@ export function FriendCardOverlay({ friend, variant }: FriendCardOverlayProps) {
             <div className="relative p-6 bg-gradient-to-t from-black via-black/80 to-transparent pt-16">
                 <div className="mb-6">
                     <h3 className="text-3xl font-bold text-white leading-tight drop-shadow-md">
-                        {friend.recipientUsername}
+                        {friend.username}
                     </h3>
                 </div>
 
