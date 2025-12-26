@@ -1,26 +1,46 @@
-import { useQueryClient } from "@tanstack/react-query";
-import type { GamePlayer } from "@/types/game.types.ts";
+// hooks/game/useFavouriteGame.ts
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { gameService } from '@/services/game/gameService';
 
-export function useFavoriteGame() {
+export function useSetFavoriteGame() {
     const queryClient = useQueryClient();
-    const QUERY_KEY = ['games'];
 
-    const setFavorite = async (gameId: string) => {
-        await queryClient.cancelQueries({ queryKey: QUERY_KEY });
+    return useMutation({
+        mutationFn: (gameId: string) => gameService.changeFavoriteGame(gameId),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['games'] });
+        },
+    });
+}
 
-        const previousGames = queryClient.getQueryData<GamePlayer[]>(QUERY_KEY);
+export function useRemoveFavoriteGame() {
+    const queryClient = useQueryClient();
 
-        if (previousGames) {
-            queryClient.setQueryData<GamePlayer[]>(QUERY_KEY, (old) => {
-                if (!old) return [];
-                return old.map(game => ({
-                    ...game,
-                    isFavourite: game.id === gameId
-                }));
-            });
+    return useMutation({
+        mutationFn: () => gameService.removeFavoriteGame(),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['games'] });
+        },
+    });
+}
+
+/**
+ * Convenience hook that handles both set and remove
+ */
+export function useFavoriteGame() {
+    const setFavoriteMutation = useSetFavoriteGame();
+    const removeFavoriteMutation = useRemoveFavoriteGame();
+
+    const toggleFavorite = (gameId: string, currentIsFavourite: boolean) => {
+        if (currentIsFavourite) {
+            removeFavoriteMutation.mutate(undefined);
+        } else {
+            setFavoriteMutation.mutate(gameId);
         }
-        return { previousGames };
     };
 
-    return { setFavorite };
+    return {
+        toggleFavorite,
+        isLoading: setFavoriteMutation.isPending || removeFavoriteMutation.isPending,
+    };
 }

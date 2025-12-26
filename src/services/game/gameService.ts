@@ -7,6 +7,7 @@ import type {
     GameUnauthenticated
 } from "@/types/game.types.ts";
 import {MOCK_GAMES_ADMIN, MOCK_GAMES_UNAUTHENTICATED, MOCK_GAMES_USER} from "@/mockData/games.ts";
+import type {PlayerDto} from "@/types/player.types.ts";
 
 const USE_MOCKS = true;
 const API_URL = import.meta.env.VITE_BACKEND_URL;
@@ -28,6 +29,29 @@ export const gameService = {
             return MOCK_GAMES_USER;
         }
         const { data } = await axios.get(`http://${API_URL}/games`);
+        return data;
+    },
+    /**
+     * POST /players/change-favorite-game/{gameId}
+     * Mark a game as favorite
+     * Returns updated PlayerDto
+     */
+    changeFavoriteGame: async (gameId: string): Promise<PlayerDto> => {
+        const { data } = await axios.post(
+            `http://${API_URL}/players/change-favorite-game/${gameId}`
+        );
+        return data;
+    },
+
+    /**
+     * POST /players/removeFavorite-game
+     * Remove game from favorites
+     * Returns updated PlayerDto
+     */
+    removeFavoriteGame: async (): Promise<PlayerDto> => {
+        const { data } = await axios.post(
+            `http://${API_URL}/players/removeFavorite-game`
+        );
         return data;
     },
 

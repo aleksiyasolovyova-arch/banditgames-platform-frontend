@@ -1,7 +1,9 @@
 import { Button } from '@/components/ui/Button';
 import type { GamePlayer } from "@/types/game.types.ts";
-import { Bot, Sparkles, Star } from "lucide-react";
+import { Bot, Sparkles, Star, Loader2 } from "lucide-react";
 import { useFavoriteGame } from "@/hooks/game/useFavouriteGame.ts";
+import React from "react";
+import {useQueryClient} from "@tanstack/react-query";
 
 interface GameCardOverlayProps {
     game: GamePlayer;
@@ -9,13 +11,18 @@ interface GameCardOverlayProps {
 }
 
 export function GameCardOverlay({ game, isFeatured = false }: GameCardOverlayProps) {
-    const { setFavorite } = useFavoriteGame();
+    const { toggleFavorite, isLoading } = useFavoriteGame();
+    const queryClient = useQueryClient();
 
     const handleFavoriteClick = (e: React.MouseEvent) => {
         e.stopPropagation();
         e.preventDefault();
-        void setFavorite(game.id);
-    };
+        toggleFavorite(game.id, game.isFavourite);
+
+        setTimeout(() => {
+            queryClient.refetchQueries({ queryKey: ['games'] });
+        }, 100);
+    }
 
     return (
         <div className={`flex flex-col justify-between h-full w-full pointer-events-none select-none ${isFeatured ? 'items-center' : ''}`}>
@@ -41,20 +48,25 @@ export function GameCardOverlay({ game, isFeatured = false }: GameCardOverlayPro
 
                 <button
                     onClick={handleFavoriteClick}
+                    disabled={isLoading}
                     className={`
-                        p-2 rounded-full backdrop-blur-md border transition-all duration-300 group
+                        p-2 rounded-full backdrop-blur-md border transition-all duration-300 group disabled:opacity-50
                         ${game.isFavourite
                         ? 'bg-yellow-500/20 border-yellow-500 text-yellow-500 shadow-[0_0_15px_rgba(234,179,8,0.5)]'
                         : 'bg-black/40 border-zinc-700 text-zinc-500 hover:text-yellow-400 hover:border-yellow-500/50 hover:bg-black/60'
                     }
                     `}
-                    title={game.isFavourite ? "Current Favorite" : "Set as Favorite"}
+                    title={game.isFavourite ? "Remove from Favorites" : "Set as Favorite"}
                 >
-                    <Star
-                        size={20}
-                        fill={game.isFavourite ? "currentColor" : "none"}
-                        className={`transition-transform duration-300 ${game.isFavourite ? 'scale-110' : 'group-hover:scale-110'}`}
-                    />
+                    {isLoading ? (
+                        <Loader2 size={20} className="animate-spin" />
+                    ) : (
+                        <Star
+                            size={20}
+                            fill={game.isFavourite ? "currentColor" : "none"}
+                            className={`transition-transform duration-300 ${game.isFavourite ? 'scale-110' : 'group-hover:scale-110'}`}
+                        />
+                    )}
                 </button>
             </div>
 
