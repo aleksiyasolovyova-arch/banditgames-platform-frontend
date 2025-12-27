@@ -10,6 +10,7 @@ import { Link, useLocation } from 'react-router-dom'
 interface GooeyNavItem {
     label: string;
     href: string;
+    image?: string;
     onClick?: () => void;
 }
 
@@ -126,8 +127,8 @@ export const GooeyNav = ({
 
         Object.assign(filterRef.current.style, styles)
         Object.assign(textRef.current.style, styles)
-        textRef.current.innerText = element.innerText
-    }, [])
+        const textSpan = element.querySelector('span');
+        textRef.current.innerText = textSpan ? textSpan.innerText : element.innerText  }, [])
 
     const handleClick = (e: MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
         const liEl = e.currentTarget.closest('li')
@@ -193,6 +194,7 @@ export const GooeyNav = ({
           li.active { color: black; text-shadow: none; }
           li.active::after { opacity: 1; transform: scale(1); }
           li::after { content: ""; position: absolute; inset: 0; border-radius: 9999px; background: white; opacity: 0; transform: scale(0); transition: all 0.3s ease; z-index: -1; }
+          li.active img {border-color: black;}
         `}
             </style>
 
@@ -209,7 +211,7 @@ export const GooeyNav = ({
                         {items.map((item, index) => (
                             <li
                                 key={item.href}
-                                className={`rounded-full relative cursor-pointer transition-colors duration-300 ease text-white/70 hover:text-white ${
+                                className={`rounded-full relative cursor-pointer transition-colors duration-300 ease text-white/70 hover:text-white flex items-center ${
                                     activeIndex === index ? 'active !text-black' : ''
                                 }`}
                             >
@@ -219,19 +221,24 @@ export const GooeyNav = ({
                                             handleClick(e);
                                             item.onClick?.();
                                         }}
-                                        className="outline-none py-2 px-4 inline-block font-bold tracking-wide bg-transparent border-none cursor-pointer"
+                                        className="outline-none py-2 px-4 flex items-center gap-2 font-bold tracking-wide bg-transparent border-none cursor-pointer"
                                         style={{ color: 'inherit' }}
                                     >
-                                        {item.label}
+                                        {item.image && (
+                                            <img src={item.image} className="w-6 h-6 rounded-full border border-white/20 object-cover" alt="" />
+                                        )}
+                                        <span>{item.label}</span>
                                     </button>
                                 ) : (
                                     <Link
                                         to={item.href}
                                         onClick={handleClick}
-                                        className="outline-none py-2 px-4 inline-block font-bold tracking-wide"
-                                        aria-current={activeIndex === index ? 'page' : undefined}
+                                        className="outline-none py-2 px-4 flex items-center gap-2 font-bold tracking-wide"
                                     >
-                                        {item.label}
+                                        {item.image && (
+                                            <img src={item.image} className="w-6 h-6 rounded-full border border-white/20 object-cover" alt="" />
+                                        )}
+                                        <span>{item.label}</span>
                                     </Link>
                                 )}
                             </li>

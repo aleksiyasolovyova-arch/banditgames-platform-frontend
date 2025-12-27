@@ -13,9 +13,9 @@ export const useChangePlayerPicture = () => {
             )
             return response.data
         },
-        onSuccess: (updatedPlayer) => {
+        onSuccess: async (updatedPlayer)  => {
             queryClient.setQueryData(['player'], updatedPlayer)
-            queryClient.invalidateQueries({queryKey: ['player']})
+           await queryClient.invalidateQueries({queryKey: ['player']})
 
         },
         onError: (error) => {
