@@ -6,8 +6,8 @@ export function useSetFavoriteGame() {
 
     return useMutation({
         mutationFn: (gameId: string) => gameService.changeFavoriteGame(gameId),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['games'] });
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({ queryKey: ['games'] });
         },
     })
 }
@@ -17,8 +17,8 @@ export function useRemoveFavoriteGame() {
 
     return useMutation({
         mutationFn: () => gameService.removeFavoriteGame(),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['games'] });
+        onSuccess: async () => {
+           await queryClient.invalidateQueries({ queryKey: ['games'] });
         },
     })
 }
@@ -32,7 +32,7 @@ export function useFavoriteGame() {
 
     const toggleFavorite = (gameId: string, currentIsFavourite: boolean) => {
         if (currentIsFavourite) {
-            removeFavoriteMutation.mutate(undefined);
+            removeFavoriteMutation.mutate();
         } else {
             setFavoriteMutation.mutate(gameId);
         }
