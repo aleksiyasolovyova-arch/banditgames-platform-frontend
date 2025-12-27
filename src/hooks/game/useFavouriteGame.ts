@@ -1,4 +1,3 @@
-// hooks/game/useFavouriteGame.ts
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { gameService } from '@/services/game/gameService';
 
@@ -10,7 +9,7 @@ export function useSetFavoriteGame() {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['games'] });
         },
-    });
+    })
 }
 
 export function useRemoveFavoriteGame() {
@@ -21,7 +20,7 @@ export function useRemoveFavoriteGame() {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['games'] });
         },
-    });
+    })
 }
 
 /**
@@ -37,10 +36,10 @@ export function useFavoriteGame() {
         } else {
             setFavoriteMutation.mutate(gameId);
         }
-    };
+    }
 
     return {
         toggleFavorite,
         isLoading: setFavoriteMutation.isPending || removeFavoriteMutation.isPending,
-    };
+    }
 }
