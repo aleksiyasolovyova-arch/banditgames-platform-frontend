@@ -9,7 +9,7 @@ import type {
 import {MOCK_GAMES_ADMIN, MOCK_GAMES_UNAUTHENTICATED, MOCK_GAMES_USER} from "@/mockData/games.ts";
 import type {PlayerDto} from "@/types/player.types.ts";
 
-const USE_MOCKS = true;
+const USE_MOCKS = false;
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 
 export const gameService = {

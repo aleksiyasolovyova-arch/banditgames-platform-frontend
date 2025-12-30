@@ -8,6 +8,7 @@ import {AdminDashboardPage} from "@/pages/admin/AdminDashboardPage.tsx";
 import {CreateGamePage} from "@/pages/developer/CreateGamePage.tsx";
 import {IndexPage} from "@/pages/IndexPage.tsx";
 import {PlayerProfilePage} from "@/pages/player/PlayerProfilePage.tsx";
+import {LobbyReadyPage} from "@/pages/LobbyReadyPage.tsx";
 function App() {
     return (
         <KeycloakProvider>
@@ -19,8 +20,9 @@ function App() {
                     <Route path="/" element={<IndexPage />} />
                     <Route path="/submit-game" element={<CreateGamePage />} />
                     <Route path="achievements" element={<AchievementsPage />} />
-                    <Route path="/player-stats" element={<PlayerProfilePage />} />
+                    <Route path="/profile" element={<PlayerProfilePage />} />
                     <Route path="friends" element={<FriendsPage />} />
+                    <Route path="/lobby-ready" element={<LobbyReadyPage />} />
                 </Route>
             </Routes>
         </BrowserRouter>
