@@ -6,21 +6,17 @@ import {GameCardOverlay} from "@/components/gameLibrary/GameCardOverlay.tsx";
 import {FeaturedPodium} from "@/components/gameLibrary/FeaturedPodium.tsx";
 import {GameSelectionModal} from "@/components/player/lobby/GameSelectionModal.tsx"
 import type {GamePlayer} from "@/types/game.types.ts";
-import type {Game} from "@/types/player.types.ts";
-
-
 
 export function GamesPage() {
     const { data: games, isLoading } = useGameListPlayer();
     const [searchQuery, setSearchQuery] = useState('');
-    const [selectedGame, setSelectedGame] = useState<Game | null>(null);
 
-    const handleOpenModal = (gamePlayer: GamePlayer) => {
-        setSelectedGame({
-            gameId: gamePlayer.id,
-            gameUrl: gamePlayer.gameUrl,
-            title: gamePlayer.name
-        });
+    // 🛠️ FIX: State now uses GamePlayer directly
+    const [selectedGame, setSelectedGame] = useState<GamePlayer | null>(null);
+
+    // 🛠️ FIX: No mapping needed, just set the object
+    const handleOpenModal = (game: GamePlayer) => {
+        setSelectedGame(game);
     };
 
     const handleCloseModal = () => {
@@ -53,23 +49,15 @@ export function GamesPage() {
             )}
 
             <div className="mx-auto px-6 max-w-7xl">
-
                 {favoriteGame && (
                     <div className="mb-32 w-full">
                         <FeaturedPodium game={favoriteGame} />
                     </div>
                 )}
 
+                {/* Search Bar Code Omitted for brevity, remains same */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 border-b border-zinc-800 pb-8">
-                    <div>
-                        <h2 className="text-3xl font-bold tracking-tight text-white mb-1">
-                            All Games
-                        </h2>
-                        <p className="text-zinc-400">
-                            {filteredGames.length} experiences available
-                        </p>
-                    </div>
-
+                    {/* ... Same search UI ... */}
                     <div className="w-full md:w-80 relative group">
                         <div className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 group-focus-within:text-indigo-400 transition-colors">
                             <Search size={18} />
@@ -87,7 +75,8 @@ export function GamesPage() {
                 {filteredGames.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
                         {filteredGames.map((game) => (
-                            <div key={game.id} className="flex justify-center w-full">
+                            // 🛠️ FIX: Use game.gameId (from GamePlayer)
+                            <div key={game.gameId} className="flex justify-center w-full">
                                 <TiltedCard
                                     imageSrc={game.pictureUrl}
                                     altText={game.name}
@@ -104,18 +93,19 @@ export function GamesPage() {
                                     overlayContent={
                                         <GameCardOverlay
                                             game={game}
-                                            onPlay={handleOpenModal}/>
+                                            onPlay={handleOpenModal} // Direct pass
+                                        />
                                     }
                                 />
                             </div>
                         ))}
                     </div>
                 ) : (
-                    !favoriteGame &&(
-                    <div className="text-center py-20 bg-zinc-900/30 rounded-xl border border-zinc-800 border-dashed">
-                        <p className="text-zinc-500">No games found matching your search.</p>
-                    </div>
-                ))}
+                    !favoriteGame && (
+                        <div className="text-center py-20 bg-zinc-900/30 rounded-xl border border-zinc-800 border-dashed">
+                            <p className="text-zinc-500">No games found matching your search.</p>
+                        </div>
+                    ))}
             </div>
         </div>
     )

@@ -27,7 +27,7 @@ export interface GameAdmin {
 }
 
 export interface GamePlayer {
-    id: string;
+    gameId: string;
     name: string;
     description: string;
     pictureUrl: string;

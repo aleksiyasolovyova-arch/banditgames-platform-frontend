@@ -1,23 +1,34 @@
-import type { Game } from "@/types/player.types.ts";
 import { useLobby } from "@/hooks/player/useLobby.ts";
-import {Button} from "@/components/ui/Button.tsx";
+import { Button } from "@/components/ui/Button.tsx";
+import axios from "axios";
+import type {GamePlayer} from "@/types/game.types.ts";
 
 interface GameSelectionModalProps {
     isOpen: boolean;
     onClose: () => void;
-    game: Game;
+    game: GamePlayer;
 }
+
 export const GameSelectionModal = ({ isOpen, onClose, game }: GameSelectionModalProps) => {
     const {
         username,
         setUsername,
         isLoading,
-        error,
+        error, // Now an Error Object, not a string
         handlePlayAI,
         handlePlayStranger
     } = useLobby(game);
 
     if (!isOpen) return null;
+
+    // Helper to extract the error message safely
+    const getErrorMessage = () => {
+        if (!error) return null;
+        if (axios.isAxiosError(error)) {
+            return error.response?.data?.message || error.message;
+        }
+        return (error instanceof Error) ? error.message : "An unexpected error occurred";
+    };
 
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-zinc-950/70 backdrop-blur-sm animate-in fade-in duration-200">
@@ -26,7 +37,8 @@ export const GameSelectionModal = ({ isOpen, onClose, game }: GameSelectionModal
                 <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
                     <div>
                         <h3 className="text-xl font-bold text-gray-900">
-                            {game.title ? `Play ${game.title}` : 'Start Match'}
+                            {/* Ensure this property exists on your Game type, usually it is game.name */}
+                            {game.name ? `Play ${game.name}` : 'Start Match'}
                         </h3>
                         <p className="text-xs text-gray-500 uppercase tracking-wide font-semibold mt-1">Select Mode</p>
                     </div>
@@ -42,7 +54,8 @@ export const GameSelectionModal = ({ isOpen, onClose, game }: GameSelectionModal
                     {error && (
                         <div className="p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm flex items-center gap-2">
                             <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                            {error}
+                            {/* Call the helper function here */}
+                            {getErrorMessage()}
                         </div>
                     )}
 

@@ -1,92 +1,84 @@
 import { useState } from 'react';
-import axios from 'axios';
+import { useMutation } from '@tanstack/react-query';
+import { useNavigate } from "react-router-dom";
+import { lobbyService } from "@/services/player/lobbyService.ts";
 import type {
-    Game,
     CreateLobbyForStrangerRequest,
     CreateLobbyForAIRequest,
-    CreateLobbyForFriendRequest
+    CreateLobbyForFriendRequest,
+    LobbyDto
 } from "@/types/player.types";
-import {createStrangerLobby, createAILobby, createFriendLobby} from "@/services/player/lobbyService.ts";
-import {useNavigate} from "react-router-dom";
+import type {GamePlayer} from "@/types/game.types.ts";
 
-export const useLobby = (game?: Game) => {
+export const useLobby = (game?: GamePlayer) => {
     const [username, setUsername] = useState<string>('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
 
-    const handleError = (err: unknown) => {
-        if (axios.isAxiosError(err)) {
-            const message = err.response?.data?.message || 'Failed to create game lobby';
-            setError(message);
-        } else {
-            setError('An unexpected error occurred');
-            console.error(err);
+    // --- Mutations ---
+
+    const strangerMutation = useMutation({
+        mutationFn: (req: CreateLobbyForStrangerRequest) => lobbyService.createStrangerLobby(req),
+        onSuccess: (data: LobbyDto) => {
+            navigate('/lobby-ready', { state: data });
         }
-    }
+    });
 
-    const handleChallengeFriend = async (friendId: string, selectedGameId?: string) => {
+    const aiMutation = useMutation({
+        mutationFn: (req: CreateLobbyForAIRequest) => lobbyService.createAILobby(req),
+        onSuccess: (data: LobbyDto) => {
+            navigate('/lobby-ready', { state: data });
+        }
+    });
+
+    const friendMutation = useMutation({
+        mutationFn: (req: CreateLobbyForFriendRequest) => lobbyService.createFriendLobby(req),
+        onSuccess: (data: LobbyDto) => {
+            navigate('/lobby-ready', { state: data });
+        }
+    });
+
+    // --- Handlers ---
+
+    const handleChallengeFriend = (friendId: string, selectedGameId?: string) => {
         const finalGameId = selectedGameId || game?.gameId;
-
         if (!finalGameId || !friendId) return;
 
-        setIsLoading(true);
-        setError(null);
-
-        try {
-            const request: CreateLobbyForFriendRequest = {
-                gameId: finalGameId,
-                friendId: friendId
-            };
-            const lobbyData = await createFriendLobby(request);
-            navigate('/lobby-ready', { state: lobbyData });
-        } catch (err) {
-            handleError(err);
-        } finally {
-            setIsLoading(false);
-        }
+        friendMutation.mutate({
+            gameId: finalGameId,
+            friendId: friendId
+        });
     }
 
-    const handlePlayAI = async () => {
+    const handlePlayAI = () => {
         if (!game) return;
-        setIsLoading(true);
-        setError(null);
 
-        try {
-            const request: CreateLobbyForAIRequest = { gameId: game.gameId };
-            const lobbyData = await createAILobby(request);
-            navigate('/lobby-ready', { state: lobbyData });
-        } catch (err) {
-            handleError(err);
-        } finally {
-            setIsLoading(false);
-        }
+        aiMutation.mutate({
+            gameId: game.gameId
+        });
     }
 
-    const handlePlayStranger = async () => {
+    const handlePlayStranger = () => {
         if (!game || !username.trim()) return;
 
-        setIsLoading(true);
-        setError(null);
-
-        try {
-            const request: CreateLobbyForStrangerRequest = {
-                gameId: game.gameId,
-                strangerUserName: username
-            };
-            const lobbyData = await createStrangerLobby(request);
-            navigate('/lobby-ready', { state: lobbyData });        } catch (err) {
-            handleError(err);
-        } finally {
-            setIsLoading(false);
-        }
+        strangerMutation.mutate({
+            gameId: game.gameId,
+            strangerUserName: username
+        });
     }
 
+
     return {
+        // State
         username,
         setUsername,
-        isLoading,
-        error,
+
+        // Computed Loading State (true if any mutation is pending)
+        isLoading: strangerMutation.isPending || aiMutation.isPending || friendMutation.isPending,
+
+        // Error State (returns the first error found, if any)
+        error: strangerMutation.error || aiMutation.error || friendMutation.error,
+
+        // Actions
         handleChallengeFriend,
         handlePlayAI,
         handlePlayStranger

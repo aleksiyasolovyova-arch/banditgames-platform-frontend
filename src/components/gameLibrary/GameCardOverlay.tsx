@@ -18,7 +18,7 @@ export function GameCardOverlay({ game, isFeatured = false, onPlay }: GameCardOv
     const handleFavoriteClick = (e: React.MouseEvent) => {
         e.stopPropagation();
         e.preventDefault();
-        toggleFavorite(game.id, game.isFavourite);
+        toggleFavorite(game.gameId, game.isFavourite);
 
         setTimeout(async () => {
             await queryClient.refetchQueries({ queryKey: ['games'] });
