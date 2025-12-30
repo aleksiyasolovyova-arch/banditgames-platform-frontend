@@ -2,7 +2,6 @@ import { PixelRevealCard } from "@/components/achievements/PixelRevealCard.tsx";
 import { Gamepad2, Lock } from "lucide-react";
 import type { PlatformAchievement, GameAchievement } from "@/types/achievement.type.ts";
 
-// 1. Define the UI-specific types that include the calculated props from the parent
 export interface UIPlatformAchievement extends PlatformAchievement {
     isUnlocked: boolean;
     currentValue: number; // Calculated in parent (0 if locked, requiredValue if unlocked)
@@ -12,7 +11,6 @@ export interface UIGameAchievement extends GameAchievement {
     isUnlocked: boolean;
 }
 
-// 2. Union type for the props
 type AchievementItem = UIPlatformAchievement | UIGameAchievement;
 
 interface AchievementSectionProps {
@@ -23,7 +21,6 @@ interface AchievementSectionProps {
 export const AchievementSection = ({ title, achievements }: AchievementSectionProps) => {
     if (!achievements || achievements.length === 0) return null;
 
-    // 3. Update Type Guard to check for 'requiredValue' which exists on PlatformAchievement
     const isPlatformAchievement = (
         achievement: AchievementItem
     ): achievement is UIPlatformAchievement => {

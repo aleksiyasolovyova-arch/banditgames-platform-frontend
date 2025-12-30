@@ -1,5 +1,5 @@
 //Original code from react bits, with refactoring
-import {
+import React, {
     useRef,
     useEffect,
     useCallback,
@@ -11,7 +11,7 @@ interface GooeyNavItem {
     label: string;
     href: string;
     image?: string;
-    onClick?: () => void;
+    onClick?: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
 export interface GooeyNavProps {
@@ -219,7 +219,7 @@ export const GooeyNav = ({
                                     <button
                                         onClick={(e) => {
                                             handleClick(e);
-                                            item.onClick?.();
+                                            item.onClick?.(e);
                                         }}
                                         className="outline-none py-2 px-4 flex items-center gap-2 font-bold tracking-wide bg-transparent border-none cursor-pointer"
                                         style={{ color: 'inherit' }}

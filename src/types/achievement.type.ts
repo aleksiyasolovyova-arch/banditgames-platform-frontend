@@ -1,3 +1,10 @@
+export const AchievementType = {
+    PLAY_COUNT: 'PLAY_COUNT',
+    WIN_COUNT: 'WIN_COUNT',
+    FRIEND_COUNT: 'FRIEND_COUNT',
+    RECORD_TIME: 'RECORD_TIME'
+} as const;
+
 export type AchievementType = 'PLAY_COUNT' | 'WIN_COUNT' | 'FRIEND_COUNT' | 'RECORD_TIME';
 
 export const ACHIEVEMENT_TYPES_LABELS: Record<string, string> = {

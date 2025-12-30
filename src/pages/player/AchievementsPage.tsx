@@ -11,7 +11,7 @@ export function AchievementsPage() {
                 <Loader2 className="w-10 h-10 animate-spin text-indigo-500 mb-4" />
                 <p>Loading your trophies...</p>
             </div>
-        );
+        )
     }
 
     const platformList = data?.platformAchievements || [];
@@ -25,13 +25,13 @@ export function AchievementsPage() {
             isUnlocked,
             currentValue: isUnlocked ? ach.requiredValue : 0,
             unlockedDate: ach.unlockedAt ? new Date(ach.unlockedAt).toLocaleDateString() : null
-        };
-    });
+        }
+    })
 
     const gameAchievementsWithStatus: UIGameAchievement[] = gameList.map(ach => ({
         ...ach,
         isUnlocked: !!ach.unlockedAt,
-    }));
+    }))
 
     const platformUnlocked = platformAchievementsWithStatus.filter(a => a.isUnlocked).length;
     const gameUnlocked = gameAchievementsWithStatus.filter(a => a.isUnlocked).length;

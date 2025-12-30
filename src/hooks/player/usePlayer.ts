@@ -1,15 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-import type {PlayerDto} from '@/types/player.types';
+import { playerService } from "@/services/player/playerService.ts";
 
-export function usePlayer() {
+export const usePlayerNavBar = () => {
     return useQuery({
-        queryKey: ['player'],
-        queryFn: async () => {
-            const { data } = await axios.get<PlayerDto>(
-                `http://${import.meta.env.VITE_BACKEND_URL}/players`
-            );
-            return data;
-        },
+        queryKey: ['player-navbar'],
+        queryFn: playerService.getMyNavBarData,
     });
-}
+};
+
+export const usePlayerProfile = () => {
+    return useQuery({
+        queryKey: ['player-profile'],
+        queryFn: playerService.getMyProfile,
+    });
+};
