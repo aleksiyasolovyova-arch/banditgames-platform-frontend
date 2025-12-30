@@ -1,52 +1,43 @@
-import {
-    type GameAchievementWithStatus,
-    MOCK_GAME_ACHIEVEMENTS,
-    MOCK_PLATFORM_ACHIEVEMENTS, MOCK_UNLOCKED_GAME_ACHIEVEMENTS,
-    MOCK_USER_PROGRESS, type PlatformAchievementWithProgress
-} from "@/mockData/achievements.ts";
-import {AchievementSection} from "@/components/achievements/AchievementSection.tsx";
-import {useMemo} from "react";
-import {AchievementType} from "@/types/achievement.type.ts";
+import { usePlayerAchievements } from "@/hooks/achievement/useAchievements.ts";
+import { AchievementSection, type UIPlatformAchievement, type UIGameAchievement } from "@/components/achievements/AchievementSection.tsx";
+import { Loader2 } from "lucide-react";
 
 export function AchievementsPage() {
-    // Calculate progress for platform achievements based on user stats
-    const platformAchievementsWithProgress = useMemo((): PlatformAchievementWithProgress[] => {
-        return MOCK_PLATFORM_ACHIEVEMENTS.map(achievement => {
-            let currentValue = 0;
+    const { data, isLoading } = usePlayerAchievements();
 
-            switch (achievement.type) {
-                case AchievementType.FRIEND_COUNT:
-                    currentValue = MOCK_USER_PROGRESS.friendCount;
-                    break;
-                case AchievementType.PLAY_COUNT:
-                    currentValue = MOCK_USER_PROGRESS.matchCount;
-                    break;
-                case AchievementType.WIN_COUNT:
-                    currentValue = MOCK_USER_PROGRESS.winCount;
-                    break;
-            }
+    if (isLoading) {
+        return (
+            <div className="min-h-screen bg-zinc-950 flex items-center justify-center text-zinc-400">
+                <Loader2 className="w-10 h-10 animate-spin text-indigo-500 mb-4" />
+                <p>Loading your trophies...</p>
+            </div>
+        );
+    }
 
-            return {
-                ...achievement,
-                currentValue,
-                isUnlocked: currentValue >= achievement.requiredValue
-            };
-        });
-    }, []);
+    const platformList = data?.platformAchievements || [];
+    const gameList = data?.gameAchievements || [];
 
-    // Add unlock status to game achievements
-    const gameAchievementsWithStatus = useMemo((): GameAchievementWithStatus[] => {
-        return MOCK_GAME_ACHIEVEMENTS.map(achievement => ({
-            ...achievement,
-            isUnlocked: MOCK_UNLOCKED_GAME_ACHIEVEMENTS.includes(achievement.code)
-        }));
-    }, []);
+    const platformAchievementsWithStatus: UIPlatformAchievement[] = platformList.map(ach => {
+        const isUnlocked = !!ach.unlockedAt;
 
-    // Calculate total progress
-    const platformUnlocked = platformAchievementsWithProgress.filter(a => a.isUnlocked).length;
+        return {
+            ...ach,
+            isUnlocked,
+            currentValue: isUnlocked ? ach.requiredValue : 0,
+            unlockedDate: ach.unlockedAt ? new Date(ach.unlockedAt).toLocaleDateString() : null
+        };
+    });
+
+    const gameAchievementsWithStatus: UIGameAchievement[] = gameList.map(ach => ({
+        ...ach,
+        isUnlocked: !!ach.unlockedAt,
+    }));
+
+    const platformUnlocked = platformAchievementsWithStatus.filter(a => a.isUnlocked).length;
     const gameUnlocked = gameAchievementsWithStatus.filter(a => a.isUnlocked).length;
+
     const totalUnlocked = platformUnlocked + gameUnlocked;
-    const totalCount = platformAchievementsWithProgress.length + gameAchievementsWithStatus.length;
+    const totalCount = platformList.length + gameList.length;
     const progress = totalCount > 0 ? Math.round((totalUnlocked / totalCount) * 100) : 0;
 
     return (
@@ -83,7 +74,7 @@ export function AchievementsPage() {
             <main className="mx-auto px-6 max-w-7xl">
                 <AchievementSection
                     title="Platform Milestones"
-                    achievements={platformAchievementsWithProgress}
+                    achievements={platformAchievementsWithStatus}
                 />
 
                 <AchievementSection

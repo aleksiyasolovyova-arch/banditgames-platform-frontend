@@ -1,20 +1,34 @@
 import { PixelRevealCard } from "@/components/achievements/PixelRevealCard.tsx";
 import { Gamepad2, Lock } from "lucide-react";
-import type { PlatformAchievementWithProgress, GameAchievementWithStatus } from "@/mockData/achievements.ts";
+import type { PlatformAchievement, GameAchievement } from "@/types/achievement.type.ts";
+
+// 1. Define the UI-specific types that include the calculated props from the parent
+export interface UIPlatformAchievement extends PlatformAchievement {
+    isUnlocked: boolean;
+    currentValue: number; // Calculated in parent (0 if locked, requiredValue if unlocked)
+}
+
+export interface UIGameAchievement extends GameAchievement {
+    isUnlocked: boolean;
+}
+
+// 2. Union type for the props
+type AchievementItem = UIPlatformAchievement | UIGameAchievement;
 
 interface AchievementSectionProps {
     title: string;
-    achievements: (PlatformAchievementWithProgress | GameAchievementWithStatus)[];
+    achievements: AchievementItem[];
 }
 
 export const AchievementSection = ({ title, achievements }: AchievementSectionProps) => {
     if (!achievements || achievements.length === 0) return null;
 
+    // 3. Update Type Guard to check for 'requiredValue' which exists on PlatformAchievement
     const isPlatformAchievement = (
-        achievement: PlatformAchievementWithProgress | GameAchievementWithStatus
-    ): achievement is PlatformAchievementWithProgress => {
+        achievement: AchievementItem
+    ): achievement is UIPlatformAchievement => {
         return 'requiredValue' in achievement;
-    }
+    };
 
     return (
         <section className="mb-16">
@@ -26,12 +40,15 @@ export const AchievementSection = ({ title, achievements }: AchievementSectionPr
                 {achievements.map((achievement) => {
                     const isPlatform = isPlatformAchievement(achievement);
 
-                    const uniqueKey = isPlatform ? achievement.id : `${achievement.gameId}-${achievement.code}`;
+                    const uniqueKey = isPlatform
+                        ? achievement.achievementId
+                        : `${achievement.gameId}-${achievement.code}`;
+
                     const displayTitle = isPlatform
                         ? achievement.name
-                        : achievement.code.split('_').map(w => w.charAt(0) + w.slice(1).toLowerCase()).join(' '); // "FIRST_VICTORY" -> "First Victory"
+                        : achievement.code.split('_').map(w => w.charAt(0) + w.slice(1).toLowerCase()).join(' ');
 
-                    const displayImage = isPlatform ? achievement.pictureUrl : null;
+                    const displayImage = achievement.pictureUrl;
                     const isUnlocked = achievement.isUnlocked;
 
                     return (
@@ -51,7 +68,6 @@ export const AchievementSection = ({ title, achievements }: AchievementSectionPr
                                                 className="w-full h-full object-cover transition-all duration-500"
                                             />
                                         ) : (
-                                            // Fallback for Game Achievements (No Image)
                                             <div className="flex flex-col items-center justify-center gap-2 text-zinc-700">
                                                 <Gamepad2 size={48} strokeWidth={1} />
                                                 <span className="text-[10px] font-mono uppercase opacity-50">
@@ -70,19 +86,16 @@ export const AchievementSection = ({ title, achievements }: AchievementSectionPr
                                 secondContent={
                                     <div className="w-full h-full bg-zinc-900 flex flex-col items-center justify-center p-4 text-center border border-white/5 rounded-md relative">
 
-                                        {/* Status Badge */}
                                         <div className={`absolute top-3 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
                                             isUnlocked ? 'bg-indigo-500/20 text-indigo-400' : 'bg-zinc-800 text-zinc-500'
                                         }`}>
                                             {isUnlocked ? 'Unlocked' : 'Locked'}
                                         </div>
 
-                                        {/* Description */}
                                         <p className="text-zinc-300 text-xs leading-relaxed mt-4">
                                             {achievement.description}
                                         </p>
 
-                                        {/* Progress Bar (Only for Platform Achievements) */}
                                         {isPlatform && !isUnlocked && (
                                             <div className="w-full mt-auto pt-2">
                                                 <div className="flex justify-between text-[10px] text-zinc-500 mb-1">
@@ -98,11 +111,10 @@ export const AchievementSection = ({ title, achievements }: AchievementSectionPr
                                             </div>
                                         )}
 
-                                        {/* Game Name Badge (For Game Achievements) */}
                                         {!isPlatform && (
                                             <div className="mt-auto pt-3 border-t border-white/5 w-full">
                                                 <p className="text-[10px] text-zinc-500 truncate">
-                                                    {(achievement as GameAchievementWithStatus).gameName}
+                                                    {(achievement as UIGameAchievement).gameName}
                                                 </p>
                                             </div>
                                         )}

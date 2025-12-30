@@ -1,8 +1,9 @@
-import {useAchievementsList} from "@/hooks/achievement/useAchievements.ts";
+import { useAdminAchievements } from "@/hooks/achievement/useAchievements.ts"; // Updated hook import
 import { Loader2, Hash, Target } from "lucide-react";
+import { ACHIEVEMENT_TYPES_LABELS } from "@/types/achievement.type.ts";
 
 export const PlatformAchievementList = () => {
-    const { data: achievements, isLoading } = useAchievementsList();
+    const { data: achievements, isLoading } = useAdminAchievements();
 
     if (isLoading) return <div className="flex items-center gap-2 text-zinc-500"><Loader2 className="animate-spin w-4 h-4"/> Loading achievements...</div>;
 
@@ -11,7 +12,7 @@ export const PlatformAchievementList = () => {
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {achievements.map((ach) => (
-                <div key={ach.id} className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 flex gap-4 items-start hover:border-zinc-700 transition-colors">
+                <div key={ach.achievementId} className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 flex gap-4 items-start hover:border-zinc-700 transition-colors">
                     <img
                         src={ach.pictureUrl}
                         alt={ach.name}
@@ -22,7 +23,8 @@ export const PlatformAchievementList = () => {
                         <h4 className="font-bold text-white text-sm">{ach.name}</h4>
                         <div className="flex flex-col gap-1 mt-1">
                             <span className="text-[10px] uppercase font-bold text-zinc-500 bg-zinc-900/80 px-1.5 py-0.5 rounded w-fit flex items-center gap-1">
-                                <Hash size={10}/> {ach.type}
+                                <Hash size={10}/>
+                                {ACHIEVEMENT_TYPES_LABELS[ach.type] || ach.type}
                             </span>
                             <span className="text-[10px] font-mono text-amber-500 flex items-center gap-1">
                                 <Target size={10}/> Required Value: {ach.requiredValue}
