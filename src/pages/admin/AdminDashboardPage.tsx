@@ -89,7 +89,7 @@ export const AdminDashboardPage = () => {
                                 key={game.gameId}
                                 className={`
                                     group relative backdrop-blur-sm border rounded-xl p-5 transition-all duration-300 flex flex-col md:flex-row gap-6
-                                    ${game.registrationState === 'PENDING'
+                                    ${game.pending
                                     ? 'bg-amber-950/10 border-amber-500/20 hover:bg-amber-900/10'
                                     : 'bg-zinc-900/80 border-zinc-800 hover:border-zinc-700 hover:bg-zinc-900'
                                 }
@@ -101,7 +101,7 @@ export const AdminDashboardPage = () => {
                                         alt={game.name}
                                         className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
                                     />
-                                    {game.registrationState === 'PENDING' && (
+                                    {game.pending && (
                                         <span className="absolute top-2 left-2 bg-amber-500 text-black font-bold text-[10px] px-2 py-0.5 rounded shadow-lg animate-pulse">
                                             PENDING REVIEW
                                         </span>

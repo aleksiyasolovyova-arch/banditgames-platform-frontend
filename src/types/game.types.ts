@@ -20,10 +20,10 @@ export interface GameAdmin {
     pictureUrl: string;
     gameUrl: string;
     gameCreatorName: string;
-    registrationState: RegistrationState;
     rules: Rule[];
     achievements: GameAchievement[];
     playableWithAI: boolean;
+    pending: true
 }
 
 export interface GamePlayer {
