@@ -8,9 +8,10 @@ import {useQueryClient} from "@tanstack/react-query";
 interface GameCardOverlayProps {
     game: GamePlayer;
     isFeatured?: boolean;
+    onPlay?: (game: GamePlayer) => void;
 }
 
-export function GameCardOverlay({ game, isFeatured = false }: GameCardOverlayProps) {
+export function GameCardOverlay({ game, isFeatured = false, onPlay }: GameCardOverlayProps) {
     const { toggleFavorite, isLoading } = useFavoriteGame();
     const queryClient = useQueryClient();
 
@@ -19,9 +20,14 @@ export function GameCardOverlay({ game, isFeatured = false }: GameCardOverlayPro
         e.preventDefault();
         toggleFavorite(game.id, game.isFavourite);
 
-        setTimeout(() => {
-            queryClient.refetchQueries({ queryKey: ['games'] });
+        setTimeout(async () => {
+            await queryClient.refetchQueries({ queryKey: ['games'] });
         }, 100);
+    }
+
+    const handlePlayClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        onPlay?.(game);
     }
 
     return (
@@ -82,7 +88,11 @@ export function GameCardOverlay({ game, isFeatured = false }: GameCardOverlayPro
                 </div>
 
                 <div className="pointer-events-auto w-full">
-                    <Button variant="white" className="w-full font-bold tracking-wide uppercase hover:scale-[1.02] transition-transform active:scale-[0.98]">
+                    <Button
+                        onClick={handlePlayClick}
+                        variant="white"
+                        className="w-full font-bold tracking-wide uppercase hover:scale-[1.02] transition-transform active:scale-[0.98]"
+                    >
                         Play Now
                     </Button>
                 </div>

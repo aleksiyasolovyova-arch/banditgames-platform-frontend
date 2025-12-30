@@ -4,12 +4,28 @@ import {useGameListPlayer} from "@/hooks/game/useGames.ts";
 import {Loader2, Search} from "lucide-react";
 import {GameCardOverlay} from "@/components/gameLibrary/GameCardOverlay.tsx";
 import {FeaturedPodium} from "@/components/gameLibrary/FeaturedPodium.tsx";
+import {GameSelectionModal} from "@/components/player/lobby/GameSelectionModal.tsx"
+import type {GamePlayer} from "@/types/game.types.ts";
+import type {Game} from "@/types/player.types.ts";
 
-//TODO: add in the logic for the lobby
+
 
 export function GamesPage() {
     const { data: games, isLoading } = useGameListPlayer();
     const [searchQuery, setSearchQuery] = useState('');
+    const [selectedGame, setSelectedGame] = useState<Game | null>(null);
+
+    const handleOpenModal = (gamePlayer: GamePlayer) => {
+        setSelectedGame({
+            gameId: gamePlayer.id,
+            gameUrl: gamePlayer.gameUrl,
+            title: gamePlayer.name
+        });
+    };
+
+    const handleCloseModal = () => {
+        setSelectedGame(null);
+    }
 
     if (isLoading) {
         return (
@@ -28,6 +44,14 @@ export function GamesPage() {
 
     return (
         <div className="w-full min-h-screen bg-zinc-950 text-zinc-100 font-sans pb-12 pt-2">
+            {selectedGame && (
+                <GameSelectionModal
+                    isOpen={!!selectedGame}
+                    onClose={handleCloseModal}
+                    game={selectedGame}
+                />
+            )}
+
             <div className="mx-auto px-6 max-w-7xl">
 
                 {favoriteGame && (
@@ -78,7 +102,9 @@ export function GamesPage() {
                                     showTooltip={false}
                                     displayOverlayContent={true}
                                     overlayContent={
-                                        <GameCardOverlay game={game} />
+                                        <GameCardOverlay
+                                            game={game}
+                                            onPlay={handleOpenModal}/>
                                     }
                                 />
                             </div>

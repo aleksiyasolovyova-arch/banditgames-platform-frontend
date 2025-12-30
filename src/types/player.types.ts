@@ -63,3 +63,35 @@ export interface PlayerDto {
     unlockedGameAchievements: UnlockedGameAchievement[];
     favoriteGameId?: string;
 }
+
+export interface LobbyDto {
+    lobbyId: string;
+    gameReference: string;
+    player1Id: string;
+    player2Id: string;
+    startTime: string;
+    endTime: string | null;
+    lobbyResult: string;
+    link: string;
+}
+
+export interface CreateLobbyForStrangerRequest {
+    gameId: string;
+    strangerUserName: string;
+}
+
+export interface CreateLobbyForAIRequest {
+    gameId: string;
+}
+
+export interface CreateLobbyForFriendRequest {
+    gameId: string;
+    friendId: string;
+}
+
+export interface Game {
+    gameId: string;
+    gameUrl: string;
+    title?:string;
+}
+

@@ -6,16 +6,14 @@ import { Check, X, Loader2 } from 'lucide-react';
 interface FriendCardOverlayProps {
     friend: Friend | FriendRequest;
     variant: 'friend' | 'request';
+    onInvite?: (friend: Friend) => void;
 }
 
-export function FriendCardOverlay({ friend, variant }: FriendCardOverlayProps) {
+export function FriendCardOverlay({ friend, variant, onInvite }: FriendCardOverlayProps) {
     const acceptMutation = useAcceptFriendship();
     const declineMutation = useDeclineFriendship();
     const endMutation = useEndFriendship();
 
-
-    console.log('Friend object:', friend);
-    console.log('FriendshipId:', friend.friendShipId);
 
     const handleAccept = () => {
         acceptMutation.mutate(friend.friendShipId);
@@ -47,6 +45,7 @@ export function FriendCardOverlay({ friend, variant }: FriendCardOverlayProps) {
                                 variant="primary"
                                 className="w-full shadow-lg shadow-indigo-500/20"
                                 disabled={isLoading}
+                                onClick={() => onInvite?.(friend as Friend)}
                             >
                                 {isLoading ? <Loader2 size={18} className="animate-spin mr-2" /> : null}
                                 INVITE
@@ -94,5 +93,5 @@ export function FriendCardOverlay({ friend, variant }: FriendCardOverlayProps) {
                 </div>
             </div>
         </div>
-    );
+    )
 }

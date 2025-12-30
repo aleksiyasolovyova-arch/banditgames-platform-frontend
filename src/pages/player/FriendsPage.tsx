@@ -3,15 +3,17 @@ import { Users, Inbox, UserPlus } from 'lucide-react';
 import { AllFriendsView } from '@/components/player/AllFriendsView';
 import { FriendRequestsView } from '@/components/player/FriendRequestsView';
 import { AddFriendView } from '@/components/player/AddFriendView';
-import type { FriendTab } from '@/types/player.types.ts';
+import type {Friend, FriendTab} from '@/types/player.types.ts';
 import {useFriendRequests} from "@/hooks/player/useFriends.ts";
 import {NavButton} from "@/components/ui/FriendsNavButton.tsx";
 import {useUserId} from "@/hooks/useKeycloak.tsx";
+import {FriendChallengeModal} from "@/components/player/FriendChallengeModal.tsx";
 
 export function FriendsPage() {
     const [activeTab, setActiveTab] = useState<FriendTab>('all');
     const userId = useUserId();
     const { data: requests } = useFriendRequests();
+    const [challengingFriend, setChallengingFriend] = useState<Friend | null>(null);
 
     if (!userId) {
         return (
@@ -65,6 +67,14 @@ export function FriendsPage() {
                 {activeTab === 'requests' && <FriendRequestsView />}
                 {activeTab === 'add_friend' && <AddFriendView />}
             </main>
+
+            {challengingFriend && (
+                <FriendChallengeModal
+                    isOpen={!!challengingFriend}
+                    friend={challengingFriend}
+                    onClose={() => setChallengingFriend(null)}
+                />
+            )}
         </div>
     );
 }
