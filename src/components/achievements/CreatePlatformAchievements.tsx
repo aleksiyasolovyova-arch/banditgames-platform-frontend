@@ -8,7 +8,7 @@ export const CreatePlatformAchievements = () => {
     const { mutate, isPending, isSuccess, reset } = useCreateAchievement();
 
     const [formData, setFormData] = useState<CreateAchievementRequest>({
-        name: "",
+        platformAchievementName: "",
         description: "",
         pictureUrl: "",
         platformAchievementType: AchievementType.PLAY_COUNT, // Default enum value
@@ -19,7 +19,7 @@ export const CreatePlatformAchievements = () => {
         if (isSuccess) {
             const timer = setTimeout(() => {
                 setFormData({
-                    name: "",
+                    platformAchievementName: "",
                     description: "",
                     pictureUrl: "",
                     platformAchievementType: AchievementType.PLAY_COUNT,
