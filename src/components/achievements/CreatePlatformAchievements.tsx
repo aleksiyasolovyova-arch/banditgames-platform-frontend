@@ -58,7 +58,7 @@ export const CreatePlatformAchievements = () => {
                     </label>
                     <input
                         type="text"
-                        name="achievementName"
+                        name="name"
                         value={formData.name}
                         onChange={handleChange}
                         placeholder="e.g. Social Butterfly"

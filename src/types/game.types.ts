@@ -1,4 +1,4 @@
-import type {GameAchievementStub} from "@/types/achievement.type.ts";
+import type {GameAchievement} from "@/types/achievement.type.ts";
 
 export const RegistrationState = {
     PENDING: 'PENDING',
@@ -12,6 +12,7 @@ export interface Rule {
     description: string;
 }
 
+
 export interface GameAdmin {
     gameId: string; //UUID
     name: string;
@@ -21,7 +22,7 @@ export interface GameAdmin {
     gameCreatorName: string;
     registrationState: RegistrationState;
     rules: Rule[];
-    achievements: GameAchievementStub[];
+    achievements: GameAchievement[];
     playableWithAI: boolean;
 }
 
@@ -54,7 +55,7 @@ export interface RegisterGameRequest {
     gameUrl: string;
     gameCreatorName: string;
     rules: { description: string }[];
-    achievements: { code: string; description: string }[];
+    gameAchievements: { code: string; description: string }[];
     playableWithAI: boolean;
 }
 

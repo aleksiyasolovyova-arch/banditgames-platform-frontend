@@ -20,7 +20,7 @@ export const CreateGameForm = ({ onSuccess }: { onSuccess: () => void }) => {
     const { register, control, handleSubmit, formState: { errors } } = useForm<RegisterGameRequest>({
         defaultValues: {
             rules: [{ description: '' }],
-            achievements: [{ code: '', description: '' }],
+            gameAchievements: [{ code: '', description: '' }],
             playableWithAI: false
         }
     })
@@ -37,7 +37,7 @@ export const CreateGameForm = ({ onSuccess }: { onSuccess: () => void }) => {
 
     const { fields: achFields, append: addAch, remove: removeAch } = useFieldArray({
         control,
-        name: "achievements"
+        name: "gameAchievements"
     })
 
     const onSubmit = (data: RegisterGameRequest) => {
@@ -191,14 +191,14 @@ export const CreateGameForm = ({ onSuccess }: { onSuccess: () => void }) => {
                         <div key={field.id} className="flex flex-col sm:flex-row gap-2 p-3 bg-zinc-900/30 rounded-xl border border-zinc-800/50 animate-in slide-in-from-left-2 fade-in duration-300 group hover:border-zinc-700 transition-colors">
                             <div className="w-full sm:w-1/3">
                                 <input
-                                    {...register(`achievements.${index}.code`, { required: true })}
+                                    {...register(`gameAchievements.${index}.code`, { required: true })}
                                     placeholder="Code (e.g. FIRST_WIN)"
                                     className={`${inputClass} font-mono text-sm`}
                                 />
                             </div>
                             <div className="flex-1 flex gap-2">
                                 <input
-                                    {...register(`achievements.${index}.description`, { required: true })}
+                                    {...register(`gameAchievements.${index}.description`, { required: true })}
                                     placeholder="Description"
                                     className={`${inputClass}`}
                                 />
