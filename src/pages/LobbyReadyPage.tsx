@@ -7,9 +7,9 @@ import { useState } from 'react';
 export function LobbyReadyPage() {
     const location = useLocation();
     const lobby = location.state as LobbyDto;
-    const [copied, setCopied] = useState(false);
 
-    // Fallback if user navigates here directly without state
+    const [copiedField, setCopiedField] = useState<string | null>(null);
+
     if (!lobby) {
         return (
             <div className="min-h-screen bg-zinc-950 flex items-center justify-center text-white">
@@ -21,15 +21,16 @@ export function LobbyReadyPage() {
         );
     }
 
-    const handleCopy = async () => {
-        await navigator.clipboard.writeText(lobby.link);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+    const handleCopy = async (text: string, fieldId: string) => {
+        if (!text) return;
+        await navigator.clipboard.writeText(text);
+        setCopiedField(fieldId);
+        setTimeout(() => setCopiedField(null), 2000);
     };
 
     return (
         <div className="min-h-screen bg-zinc-950 flex items-center justify-center p-4">
-            <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 max-w-lg w-full shadow-2xl relative overflow-hidden">
+            <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 max-w-xl w-full shadow-2xl relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" />
 
                 <div className="text-center mb-8">
@@ -38,50 +39,74 @@ export function LobbyReadyPage() {
                 </div>
 
                 <div className="space-y-6">
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="bg-zinc-950 p-4 rounded-xl border border-zinc-800">
-                            <span className="text-xs text-zinc-500 uppercase font-bold">Player 1 ID</span>
-                            <div className="text-zinc-300 font-mono text-xs truncate mt-1" title={lobby.player1Id}>
-                                {lobby.player1Id}
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="bg-zinc-950 p-3 rounded-xl border border-zinc-800 flex flex-col gap-2">
+                            <span className="text-[10px] text-zinc-500 uppercase font-bold tracking-wider">Player 1 ID</span>
+                            <div className="flex gap-2">
+                                <input
+                                    readOnly
+                                    value={lobby.player1Id}
+                                    className="w-full bg-zinc-900 border border-zinc-800 rounded px-2 py-1.5 text-zinc-300 font-mono text-xs focus:outline-none focus:border-zinc-600 transition-colors"
+                                />
+                                <button
+                                    onClick={() => handleCopy(lobby.player1Id, 'p1')}
+                                    className="p-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-white rounded transition-colors border border-zinc-700"
+                                    title="Copy Player 1 ID"
+                                >
+                                    {copiedField === 'p1' ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
+                                </button>
                             </div>
                         </div>
-                        <div className="bg-zinc-950 p-4 rounded-xl border border-zinc-800">
-                            <span className="text-xs text-zinc-500 uppercase font-bold">Player 2 ID</span>
-                            <div className="text-zinc-300 font-mono text-xs truncate mt-1" title={lobby.player2Id}>
-                                {lobby.player2Id || "Waiting for Join..."}
+
+                        <div className="bg-zinc-950 p-3 rounded-xl border border-zinc-800 flex flex-col gap-2">
+                            <span className="text-[10px] text-zinc-500 uppercase font-bold tracking-wider">Player 2 ID</span>
+                            <div className="flex gap-2">
+                                <input
+                                    readOnly
+                                    value={lobby.player2Id || "Waiting for Join..."}
+                                    className={`w-full bg-zinc-900 border border-zinc-800 rounded px-2 py-1.5 font-mono text-xs focus:outline-none focus:border-zinc-600 transition-colors
+                                        ${lobby.player2Id ? 'text-zinc-300' : 'text-zinc-600 italic'}`}
+                                />
+                                <button
+                                    onClick={() => lobby.player2Id && handleCopy(lobby.player2Id, 'p2')}
+                                    disabled={!lobby.player2Id}
+                                    className="p-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-white rounded transition-colors border border-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    title="Copy Player 2 ID"
+                                >
+                                    {copiedField === 'p2' ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
+                                </button>
                             </div>
                         </div>
                     </div>
 
-                    <div className="bg-indigo-900/20 border border-indigo-500/30 p-5 rounded-xl">
-                        <label className="text-indigo-300 text-xs font-bold uppercase mb-2 block">Game Uplink</label>
+                    {/* Game Link Section */}
+                    <div className="bg-indigo-900/10 border border-indigo-500/20 p-5 rounded-xl">
+                        <label className="text-indigo-300 text-xs font-bold uppercase mb-2 block tracking-wider">Game Uplink</label>
                         <div className="flex gap-2">
                             <input
                                 readOnly
                                 value={lobby.link}
-                                className="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-3 py-2 text-zinc-300 text-sm focus:outline-none"
+                                className="w-full bg-zinc-950 border border-indigo-500/30 rounded-lg px-3 py-3 text-zinc-300 text-sm focus:outline-none focus:border-indigo-500 transition-colors"
                             />
                             <button
-                                onClick={handleCopy}
-                                className="p-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg transition-colors border border-zinc-700"
-                                title="Copy Link"
+                                onClick={() => handleCopy(lobby.link, 'link')}
+                                className="px-3 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg transition-colors border border-zinc-700"
+                                title="Copy Game Link"
                             >
-                                {copied ? <Check size={18} className="text-emerald-400" /> : <Copy size={18} />}
+                                {copiedField === 'link' ? <Check size={18} className="text-emerald-400" /> : <Copy size={18} />}
                             </button>
                         </div>
                     </div>
 
                     <div className="flex flex-col gap-3 mt-4">
-                        {/*
-                           Using <a> with target="_blank" to force a new tab.
-                        */}
                         <a
                             href={lobby.link}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="w-full"
                         >
-                            <Button variant="primary" className="w-full py-4 text-lg">
+                            <Button variant="primary" className="w-full py-4 text-lg shadow-lg shadow-indigo-500/20">
                                 <ExternalLink size={20} className="mr-2" />
                                 Launch Game
                             </Button>
