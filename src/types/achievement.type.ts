@@ -39,9 +39,9 @@ export interface PlayerAchievementsDto {
 }
 
 export interface CreateAchievementRequest {
-    name: string;
+    platformAchievementName: string;
     description: string;
     pictureUrl: string;
-    achievementType: AchievementType;
+    platformAchievementType: AchievementType;
     requiredValue: number;
 }

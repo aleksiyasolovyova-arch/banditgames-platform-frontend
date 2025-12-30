@@ -11,7 +11,7 @@ export const CreatePlatformAchievements = () => {
         name: "",
         description: "",
         pictureUrl: "",
-        achievementType: AchievementType.PLAY_COUNT, // Default enum value
+        platformAchievementType: AchievementType.PLAY_COUNT, // Default enum value
         requiredValue: 0
     })
 
@@ -22,7 +22,7 @@ export const CreatePlatformAchievements = () => {
                     name: "",
                     description: "",
                     pictureUrl: "",
-                    achievementType: AchievementType.PLAY_COUNT,
+                    platformAchievementType: AchievementType.PLAY_COUNT,
                     requiredValue: 0
                 });
                 reset(); // Reset React Query mutation state
@@ -59,7 +59,7 @@ export const CreatePlatformAchievements = () => {
                     <input
                         type="text"
                         name="name"
-                        value={formData.name}
+                        value={formData.platformAchievementName}
                         onChange={handleChange}
                         placeholder="e.g. Social Butterfly"
                         className={`${inputClass} text-lg`}
@@ -74,7 +74,7 @@ export const CreatePlatformAchievements = () => {
                     </label>
                     <select
                         name="achievementType"
-                        value={formData.achievementType}
+                        value={formData.platformAchievementType}
                         onChange={handleChange}
                         className={`${inputClass} text-sm cursor-pointer [&>option]:bg-zinc-900`}
                     >

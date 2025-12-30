@@ -2,7 +2,7 @@ import {type PlatformAchievement, AchievementType, type GameAchievement} from '.
 
 export const MOCK_PLATFORM_ACHIEVEMENTS: PlatformAchievement[] = [
     {
-        platformAchievementId: 'p1',
+        achievementId: 'p1',
         name: 'Social Butterfly',
         description: 'Add 10 friends to your network',
         pictureUrl: 'https://placehold.co/100',
@@ -10,7 +10,7 @@ export const MOCK_PLATFORM_ACHIEVEMENTS: PlatformAchievement[] = [
         requiredValue: 10
     },
     {
-        platformAchievementId: 'p2',
+        achievementId: 'p2',
         name: 'Veteran Player',
         description: 'Play 100 matches across all games',
         pictureUrl: 'https://placehold.co/100',
@@ -18,7 +18,7 @@ export const MOCK_PLATFORM_ACHIEVEMENTS: PlatformAchievement[] = [
         requiredValue: 100
     },
     {
-        platformAchievementId: 'p3',
+        achievementId: 'p3',
         name: 'Winner',
         description: 'Win 50 matches',
         pictureUrl: 'https://placehold.co/100',
