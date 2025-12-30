@@ -80,12 +80,12 @@ export const gameService = {
     },
 
     passGame: async (id: string): Promise<GameAdmin> => {
-        const {data} = await axios.put(`http://${API_URL}/games/${id}/accept`);
+        const {data} = await axios.patch(`http://${API_URL}/games/${id}/pass`);
         return data;
     },
 
     failGame: async (id: string): Promise<GameAdmin> => {
-        const {data} = await axios.put(`http://${API_URL}/games/${id}/reject`);
+        const {data} = await axios.patch(`http://${API_URL}/games/${id}/fail`);
         return data;
     }
 }
