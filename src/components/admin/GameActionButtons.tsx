@@ -8,7 +8,7 @@ interface Props {
 export const GameActionButtons = ({game}: Props) => {
     const {passGame, failGame} = useGameMutations();
 
-    const isPending = game.registrationState === RegistrationState.PENDING;
+    const isPending = game.registrationState === 'PENDING';
 
     if (!isPending) {
         return (
