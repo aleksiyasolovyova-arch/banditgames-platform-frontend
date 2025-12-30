@@ -1,26 +1,53 @@
 import axios from 'axios';
-import {MOCK_FRIENDS, MOCK_REQUESTS} from '@/mockData/friends.ts';
-import type {Friend, FriendshipDto} from '@/types/player.types.ts';
+import type {Friend, FriendRequest, FriendshipDto, FriendShipModelDto} from '@/types/player.types.ts';
 
 const USE_MOCKS = false;
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 
-//TODO: for getFriends and getRequests it's part of the read model, so endpoints tbd
 export const friendService = {
-    getFriends: async (): Promise<Friend[]> => {
-        if (USE_MOCKS) {
-            return MOCK_FRIENDS;
-        }
-        const { data } = await axios.get(`http://${API_URL}/friendships`);
+    /**
+     * Get all friendships (both FRIENDS and REQUESTED)
+     * Backend filters by current user automatically via JWT
+     */
+    getAllFriendships: async (): Promise<FriendShipModelDto[]> => {
+        const { data } = await axios.get<FriendShipModelDto[]>(
+            `http://${API_URL}/friendships`
+        );
         return data;
     },
 
-    getRequests: async (): Promise<Friend[]> => {
-        if (USE_MOCKS) {
-            return MOCK_REQUESTS
-        }
-        const { data } = await axios.get(`http://${API_URL}/friendships/requests`);
-        return data;
+    /**
+     * Get only accepted friendships
+     * Frontend filtering of the above
+     */
+    getFriends: async (): Promise<Friend[]> => {
+        const allFriendships = await friendService.getAllFriendships();
+        return allFriendships
+            .filter((f) => f.befriended)
+            .map((f) => ({
+                friendShipId: f.friendShipId,
+                playerId: f.playerId,
+                username: f.username,
+                pictureUrl: f.pictureUrl,
+                isFriend: true,
+            }));
+    },
+
+    /**
+     * Get only pending requests (incoming + outgoing)
+     * Frontend filtering of the above
+     */
+    getFriendRequests: async (): Promise<FriendRequest[]> => {
+        const allFriendships = await friendService.getAllFriendships();
+        return allFriendships
+            .filter((f) => !f.befriended)
+            .map((f) => ({
+                friendShipId: f.friendShipId,
+                playerId: f.playerId,
+                username: f.username,
+                pictureUrl: f.pictureUrl,
+                isFriend: false,
+            }));
     },
 
     requestFriendship: async (username: string): Promise<FriendshipDto> => {
@@ -28,19 +55,20 @@ export const friendService = {
             return new Promise((resolve, reject) => {
                 setTimeout(() => {
                     if (username.toLowerCase() === 'error') reject(new Error("Player not found"));
-                    resolve({ friendshipId: 'mock-fs-id', requesterId: 'me', recipientId: 'them', state: 'REQUESTED' });
+                    resolve({ friendShipId: 'mock-fs-id', requesterId: 'me', recipientId: 'them', state: 'REQUESTED' });
                 }, 800);
             })
         }
         const { data } = await axios.post(`http://${API_URL}/friendships`, { recipientUsername: username });
         return data;
     },
-    acceptFriendship: async (friendshipId: string): Promise<FriendshipDto> => {
+
+    acceptFriendship: async (friendShipId: string): Promise<FriendshipDto> => {
         if (USE_MOCKS) {
             return new Promise((resolve) =>
                 setTimeout(() =>
                         resolve({
-                            friendshipId,
+                            friendShipId,
                             requesterId: 'them',
                             recipientId: 'me',
                             state: 'FRIENDS'
@@ -49,15 +77,15 @@ export const friendService = {
                 )
             )
         }
-        const {data} = await axios.put(`http://${API_URL}/friendships/${friendshipId}/befriend`);
+        const {data} = await axios.put(`http://${API_URL}/friendships/${friendShipId}/befriend`);
         return data;
     },
-    declineFriendship: async (friendshipId: string): Promise<FriendshipDto> => {
+    declineFriendship: async (friendShipId: string): Promise<FriendshipDto> => {
         if (USE_MOCKS) {
             return new Promise((resolve) =>
                 setTimeout(() =>
                         resolve({
-                            friendshipId,
+                            friendShipId,
                             requesterId: 'them',
                             recipientId: 'me',
                             state: 'DECLINED'
@@ -66,15 +94,15 @@ export const friendService = {
                 )
             )
         }
-        const {data} = await axios.put(`http://${API_URL}/friendships/${friendshipId}/decline`);
+        const {data} = await axios.put(`http://${API_URL}/friendships/${friendShipId}/decline`);
         return data;
     },
-    endFriendship: async (friendshipId: string): Promise<FriendshipDto> => {
+    endFriendship: async (friendShipId: string): Promise<FriendshipDto> => {
         if (USE_MOCKS) {
             return new Promise((resolve) =>
                 setTimeout(() =>
                         resolve({
-                            friendshipId,
+                            friendShipId,
                             requesterId: 'them',
                             recipientId: 'me',
                             state: 'ENDED'
@@ -83,7 +111,7 @@ export const friendService = {
                 )
             )
         }
-        const {data} = await axios.post(`http://${API_URL}/friendships/${friendshipId}/end`);
+        const {data} = await axios.post(`http://${API_URL}/friendships/${friendShipId}/end`);
         return data;
     }
 }

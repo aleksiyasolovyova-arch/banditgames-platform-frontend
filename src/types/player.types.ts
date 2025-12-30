@@ -1,35 +1,46 @@
 export type FriendshipState = 'REQUESTED' | 'FRIENDS' | 'DECLINED' | 'ENDED';
 
-export interface Friend {
-    id: string;
-    friendshipId: string;
-    recipientUsername: string;
+// Backend DTO - exactly matching FriendShipModelDto
+export interface FriendShipModelDto {
+    friendShipId: string;  // UUID from backend
+    befriended: boolean;   // true = FRIENDS, false = REQUESTED
+    playerId: string;      // UUID of the OTHER player
+    username: string;
     pictureUrl: string;
-    state: FriendshipState;
 }
 
-export interface RequestFriendshipPayload {
-    recipientId: string;
-}
+// Frontend union type for easier handling
+export type Friend = {
+    friendShipId: string;
+    playerId: string;
+    username: string;
+    pictureUrl: string;
+    isFriend: true;  // Accepted friendship
+};
 
+export type FriendRequest = {
+    friendShipId: string;
+    playerId: string;
+    username: string;
+    pictureUrl: string;
+    isFriend: false;  // Pending request
+};
+
+// Union for component handling
+export type Friendship = Friend | FriendRequest;
+
+// For mutations (write model)
 export interface FriendshipDto {
-    friendshipId: string;
+    friendShipId: string;
     requesterId: string;
     recipientId: string;
-    state: FriendshipState;
-}
-//assumed to be returned by GET /players/{id}/friend-requests, but tbd
-export interface FriendRequest {
-    requesterId: string; // Player ID of requester
-    friendshipId: string; // Friendship ID for mutations
-    recipientUsername: string;
-    state: 'REQUESTED'; // Always REQUESTED for this view
+    state: FriendshipState
 }
 
-export type FriendTab = 'all' | 'requests' | 'add_friend'
+export type FriendTab = 'all' | 'requests' | 'add_friend';
 
 export interface ChangePlayerPictureUrlRequest {
-    pictureUrl: string
+    pictureUrl: string;
 }
 
 export interface UnlockedPlatformAchievement {
