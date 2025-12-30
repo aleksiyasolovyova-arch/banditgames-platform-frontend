@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {useGameListAdmin} from "@/hooks/game/useGames.ts";
+import {useGameListAdmin, useGameMutations} from "@/hooks/game/useGames.ts";
 import {GameActionButtons} from "@/components/admin/GameActionButtons.tsx";
 import {UpdateGameModal} from "@/components/admin/UpdateGameModal.tsx";
 import type {GameAdmin} from "@/types/game.types.ts"
@@ -16,6 +16,7 @@ import {
 export const AdminDashboardPage = () => {
 
     const {data: games, isLoading} = useGameListAdmin();
+    const { passGame, failGame } = useGameMutations();
     const [editingGame, setEditingGame] = useState<GameAdmin | null>(null);
 
     if (isLoading) {
@@ -136,7 +137,9 @@ export const AdminDashboardPage = () => {
 
                                 <div className="flex flex-row md:flex-col justify-between items-center md:items-end gap-4 min-w-[160px] md:border-l border-zinc-800 md:pl-6">
                                     <div className="w-full flex justify-end">
-                                        <GameActionButtons game={game}/>
+                                        <GameActionButtons game={game}
+                                        passGame={passGame}
+                                        failGame={failGame}/>
                                     </div>
 
                                     <button

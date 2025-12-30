@@ -58,7 +58,7 @@ export const CreatePlatformAchievements = () => {
                     </label>
                     <input
                         type="text"
-                        name="name"
+                        name="platformAchievementName"
                         value={formData.platformAchievementName}
                         onChange={handleChange}
                         placeholder="e.g. Social Butterfly"
@@ -73,7 +73,7 @@ export const CreatePlatformAchievements = () => {
                         <Hash size={14} className="text-emerald-400"/> Type
                     </label>
                     <select
-                        name="achievementType"
+                        name="plstformAchievementType"
                         value={formData.platformAchievementType}
                         onChange={handleChange}
                         className={`${inputClass} text-sm cursor-pointer [&>option]:bg-zinc-900`}

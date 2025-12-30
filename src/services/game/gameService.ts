@@ -70,12 +70,12 @@ export const gameService = {
     },
 
     updateGameUrls: async (id: string, payload: UpdateGameUrlRequest): Promise<GameAdmin> => {
-        const {data} = await axios.put(`http://${API_URL}/games/${id}`, payload);
+        const {data} = await axios.patch(`http://${API_URL}/games/${id}/urls`, payload);
         return data;
     },
 
     togglePlayableWithAI: async (id: string): Promise<GameAdmin> => {
-        const { data } = await axios.put(`http://${API_URL}/games/${id}/toggle`);
+        const { data } = await axios.patch(`http://${API_URL}/games/${id}/toggle-playable-ai`);
         return data;
     },
 

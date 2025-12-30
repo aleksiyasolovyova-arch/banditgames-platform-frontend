@@ -1,8 +1,11 @@
 import {type GameAdmin, RegistrationState} from "@/types/game.types.ts";
 import {useGameMutations} from "@/hooks/game/useGames.ts";
+import type {UseMutationResult} from "@tanstack/react-query";
 
 interface Props {
     game: GameAdmin
+    passGame: UseMutationResult<GameAdmin, Error, string, unknown>;
+    failGame: UseMutationResult<GameAdmin, Error, string, unknown>;
 }
 
 export const GameActionButtons = ({game}: Props) => {
@@ -24,12 +27,12 @@ export const GameActionButtons = ({game}: Props) => {
                 onClick={() => passGame.mutate(game.gameId)}
                 disabled={passGame.isPending}
                 className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50"
-            >Accept</button>
+            >Pass</button>
             <button
                 onClick={() => failGame.mutate(game.gameId)}
                 disabled={failGame.isPending}
                 className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50"
-            >Reject</button>
+            >Fail</button>
         </div>
     )
 }
